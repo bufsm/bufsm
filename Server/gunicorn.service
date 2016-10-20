@@ -1,0 +1,14 @@
+[Unit]
+Description=Gunicorn application server handling bUFSM
+After=network.target
+
+[Service]
+User=dalmago
+Group=www-data
+WorkingDirectory=/home/dalmago/bufsm/Server/bufsm
+ExecStart=/home/dalmago/bufsm/Server/venv/bin/gunicorn --workers 3 --bind unix:/home/dalmago/bufsm/Server/bufsm.sock bufsm.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

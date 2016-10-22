@@ -1,0 +1,17 @@
+
+server {
+    listen 80;
+    server_name bufsm.dalmago.xyz www.bufsm.dalmago.xyz;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/dalmago/bufsm/Server/bufsm;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/dalmago/bufsm/Server/bufsm.sock;
+    }
+
+}
+

@@ -25,4 +25,6 @@ Aplicação Django que utiliza *serializer* com JSON para enviar os dados pro ap
 - Raspberry Pi - local - gratuito, fácil de executar, porém depende da conexão de internet doméstica.
 
 #### Mobile:
-App desenvolvido com [React Native](http://facebook.github.io/react-native/), devido ao rápido desenvolvimento e ao mesmo ser compatível com Android e iOS. A ser disponibilizado na Google Play (limitado a contas @...ufsm.br?), porém dificilmente será disponibilizado na Apple Store (a não ser que alguém disponibilize sua conta para publicar).
+Update:
+Em vez do desenvolvimento de um app nativo, indica-se o uso de uma grande tendência para os próximos anos, que são os [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/), o que é um leque de características que fazem com que uma página Web tenha uma experiência mobile muito similar ao de um aplicativo nativo. Exemplos são encontrados [aqui](https://pwa.rocks).
+~~App desenvolvido com [React Native](http://facebook.github.io/react-native/), devido ao rápido desenvolvimento e ao mesmo ser compatível com Android e iOS. A ser disponibilizado na Google Play (limitado a contas @...ufsm.br?), porém dificilmente será disponibilizado na Apple Store (a não ser que alguém disponibilize sua conta para publicar).~~

@@ -13,7 +13,7 @@ from flask import Flask, request, redirect, json, jsonify, _app_ctx_stack
 
 # configuration
 DATABASE = 'bufsm.db'
-SECRET_KEY = 'aosdn9osg0qew213'
+SECRET_KEY = 'TOKEN'
 
 app = Flask(__name__)
 app.config.from_object(__name__)

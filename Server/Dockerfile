@@ -7,3 +7,4 @@ WORKDIR /home/flask
 
 ENTRYPOINT pip install -r requirements.txt && python app.py
 
+EXPOSE 5000

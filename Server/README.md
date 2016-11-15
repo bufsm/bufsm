@@ -2,7 +2,7 @@
 
 ## Run docker image
 ```
-docker run --name bufsm -v ${PWD}:/home/flask -d bufsm
+docker run --name bufsm -v /home/bufsm/Server:/home/flask -d bufsm
 ```
 
 

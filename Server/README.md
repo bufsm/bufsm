@@ -13,3 +13,8 @@ docker rm bufsm # delete container
 docker rmi bufsm # remove image
 docker build -t bufsm .
 ```
+
+## To debug RUNNING container:
+```
+docker exec -i -t bufsm /bin/bash
+```

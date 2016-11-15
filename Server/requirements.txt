@@ -1,3 +1,4 @@
-Django==1.10.2
-gunicorn==19.6.0
-psycopg2==2.6.2
+Flask==0.10.1
+flask-cli==0.4.0
+Pysqlite==2.8.3
+

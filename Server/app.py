@@ -8,7 +8,7 @@
 """
 from sqlite3 import dbapi2 as sqlite3
 import click, json
-from flask import Flask, request, redirect, json, jsonify, _app_ctx_stack
+from flask import Flask, request, redirect, json, jsonify, _app_ctx_stack, render_template
 
 
 # configuration
@@ -106,6 +106,11 @@ def list_things():
         #return jsonify(dic)
     except Exception as e:
         return jsonify({ 'success': False, 'error':str(e)})
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 
 
 if __name__ == '__main__':

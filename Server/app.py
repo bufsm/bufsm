@@ -107,9 +107,9 @@ def list_things():
     except Exception as e:
         return jsonify({ 'success': False, 'error':str(e)})
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# @app.route('/')
+# def home():
+#     return render_template('index.html')
 
 
 

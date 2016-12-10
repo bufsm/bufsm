@@ -4,7 +4,7 @@ var map = L.map('map'),
         crossOrigin: true,
         type: 'json'
     }, {
-        interval: 8 * 1000
+        interval: 4 * 1000
     }).addTo(map);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

@@ -4,7 +4,7 @@ var map = L.map('map'),
         crossOrigin: true,
         type: 'json'
     }, {
-        interval: 3 * 1000
+        interval: 8 * 1000
     }).addTo(map);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -12,5 +12,5 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 realtime.on('update', function() {
-    map.fitBounds(realtime.getBounds(), {maxZoom: 3});
+    map.fitBounds(realtime.getBounds(), {maxZoom: 30});
 });

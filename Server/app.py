@@ -4,7 +4,7 @@
     ~~~~~~~~
 
     A simple web api for stream map cordinates with Flask and sqlite3.
-    
+
 """
 from sqlite3 import dbapi2 as sqlite3
 import click, json
@@ -91,11 +91,15 @@ def cordinates():
 
 @app.route('/api/list')
 def list_things():
+    """
+    Serving the coordinates in GEOjsom format.
+    """
     rcv = query_db('''SELECT lat, lon, thing_name FROM things''')
     try:
         dic = []
         for t in rcv:
-            dic.append({'thing': t[2], 'lat': t[0], 'lon': t[1]})
+            dic.append({'geometry': {'type': 'Point', 'coordinates':\
+             [t[0], t[1]]}, 'type': 'Feature', 'properties': {'thing': t[2]}})
         return json.dumps(dic)
 
         #return jsonify({ 'success': True, 'error':str(rcv[0][2])})
@@ -106,5 +110,4 @@ def list_things():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host="0.0.0.0")
-
+    app.run(host="0.0.0.0", threaded=True)

@@ -109,7 +109,7 @@ def list_things():
 
 @app.route('/map')
 def home():
-    return render_template('index.html')
+    return render_template('template.html')
 
 
 

@@ -1,6 +1,8 @@
+/*url: 'http://bufsm.dalmago.xyz/api/list',*/
+
 var map = L.map('map'),
     realtime = L.realtime({
-        url: 'http://bufsm.dalmago.xyz/api/list',
+        url: 'https://wanderdrone.appspot.com/',
         crossOrigin: true,
         type: 'json'
     }, {

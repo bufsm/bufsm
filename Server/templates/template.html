@@ -1,18 +1,27 @@
 <!doctype html>
 <html lang="en" class="no-js">
 <head>
+<style>
+		#map {
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+		}
+</style>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="{{url_for('static/reset', filename='reset.css')}}"> <!-- CSS reset -->
-	<link rel="stylesheet" href="{{url_for('static/css', filename='style.css')}}"> <!-- Resource style -->
-	<script src="{{url_for('static/js', filename='modernizr.js')}}"></script> <!-- Modernizr -->
+	<link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}"> <!-- CSS reset -->
+	<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}"> <!-- Resource style -->
+	<script src="{{url_for('static', filename='js/modernizr.js')}}"></script> <!-- Modernizr -->
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <title>Bufsm - UFSM tracking bus</title>
 </head>
 <body>
 	<header>
-		<div class="cd-logo"><a href="#0"><img src="img/cd-logo.svg" alt="Logo"></a></div>
+		<div class="cd-logo"><a href="#0"><img src="{{url_for('static', filename='img/cd-logo.png')}}"   alt="Logo"></a></div>
 
 		<nav class="cd-main-nav-wrapper">
 			<ul class="cd-main-nav">
@@ -21,15 +30,12 @@
 				<li><a href="#0">Bufsm</a></li>
 				<li><a href="#0">Contato</a></li>
 				<li>
-					<a href="#0" class="cd-subnav-trigger"><span>Golpe</span></a>
+					<a href="#0" class="cd-subnav-trigger"><span>UFSM</span></a>
 
 					<ul>
 						<li class="go-back"><a href="#0">Menu</a></li>
-						<li><a href="#0">E</a></li>
-						<li><a href="#0">Golpe</a></li>
-						<li><a href="#0">Category 3</a></li>
-						<li><a href="#0">Category 4</a></li>
-						<li><a href="#0">Category 5</a></li>
+						<li><a href="#0">Portal</a></li>
+						<li><a href="#0">Horarios onibus</a></li>
 						<li><a href="#0" class="placeholder">Placeholder</a></li>
 					</ul>
 				</li>
@@ -47,7 +53,7 @@
 
 	</main>
 
-<script src="{{url_for('static/js', filename='jquery-2.1.1.js')}}"></script>
-<script src="{{url_for('static/js', filename='main.js')}}"></script> <!-- Resource jQuery -->
+<script src="{{url_for('static', filename='js/jquery-2.1.1.js')}}"></script>
+<script src="{{url_for('static', filename='js/main.js')}}"></script> <!-- Resource jQuery -->
 </body>
 </html>

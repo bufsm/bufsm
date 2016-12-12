@@ -7,13 +7,16 @@
 
 """
 from sqlite3 import dbapi2 as sqlite3
-import click, json
+import click, json, sys
 from flask import Flask, request, redirect, json, jsonify, _app_ctx_stack, render_template
 
 
 # configuration
 DATABASE = '/home/bufsm.db'
 SECRET_KEY = 'TOKEN'
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 
 app = Flask(__name__)
 app.config.from_object(__name__)

@@ -8,8 +8,8 @@ Send coordinates over wi-fi using ESP-8266
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const char* ssid      = "AP-PREDIO320";
-const char* password  = "naocompilavei";
+const char* ssid      = "USER";
+const char* password  = "PASSW";
 const char* host      = "bufsm.dalmago.xyz";
 String url = "/api/things";
 WiFiClient client;

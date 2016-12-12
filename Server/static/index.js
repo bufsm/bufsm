@@ -2,7 +2,7 @@
 
 var map = L.map('map'),
     realtime = L.realtime({
-        url: 'https://wanderdrone.appspot.com/',
+        url: 'http://bufsm.dalmago.xyz/api/list',
         crossOrigin: true,
         type: 'json'
     }, {

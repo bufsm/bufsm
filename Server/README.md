@@ -26,7 +26,7 @@ Post Coordinates
 curl -i -X POST -H "Content-Type: application/json" -d '{"thing":"thing_name",
         "key":"TOKEN", "lat":"31.123", "lon":"123.123"}' http://bufsm.dalmago.xyz/api/things
 ```
-Get GEOJson:
+Get GEOJson
 
 http://bufsm.dalmago.xyz/api/list
 

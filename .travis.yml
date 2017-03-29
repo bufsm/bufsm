@@ -1,11 +1,13 @@
 
 script:
   - rm -R test Server README.md
-  - mv Front-end/* .
-  - rm -R Front-end
-  - echo "bufsm.dalmago.xyz" > CNAME
+  - mkdir ../pages
+  - mv Front-end/* ../pages
+  # - rm -R Front-end
+  - echo "bufsm.dalmago.xyz" > ../pages/CNAME
 
 after_success:
+    - cd ../pages
     - git init
     - git config --local user.name ${MY_NAME}
     - git config --local user.email ${MY_EMAIL}

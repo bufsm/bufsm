@@ -14,3 +14,10 @@ after_success:
     - git add .
     - git commit -m "Automatically deploying to gh-pages"
     - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/dalmago/bufsm.git" master:gh-pages
+
+branches:
+  only:
+  - master
+
+notifications:
+  slack: bufsm:lxRX5FKHZuhyQi9UftbsXUuk

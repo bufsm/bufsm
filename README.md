@@ -1,4 +1,4 @@
-# bUFSM
+# bUFSM [![Build Status](https://travis-ci.org/dalmago/bufsm.svg?branch=master)](https://travis-ci.org/dalmago/bufsm)
 ### O circular da UFSM
 
 A aplicação para o ~~ônibus circular da UFSM~~ bUFSM tem por objetivo melhorar a rotina das pessoas que o utilizam, informando em tempo real ~~?~~ a localização do mesmo.
@@ -11,7 +11,7 @@ O hardware em si é dividido em duas partes principais: localização e comunica
 
 - Módulo GPS/GLONASS + GPRS
 - Módulo GPS/GLONASS + Gateway LoRA
-- Módulo GPS/GLONASS + Módulos LoRA distribuídos pelo campus 
+- Módulo GPS/GLONASS + Módulos LoRA distribuídos pelo campus
 - Módulos LoRA distribuídos pelo campus e localização por triangulação destes
 - ESP8266 (localização através do monitoramento das redes WiFi disponíveis)
 

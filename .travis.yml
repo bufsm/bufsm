@@ -1,0 +1,14 @@
+
+script:
+  - rm -R test Server README.md
+  - mv Front-end/* .
+  - rm -R Front-end
+  - echo "bufsm.dalmago.xyz" > CNAME
+
+after_success:
+    - git init
+    - git config --local user.name ${MY_NAME}
+    - git config --local user.email ${MY_EMAIL}
+    - git add .
+    - git commit -m "Automatically deploying to gh-pages"
+    - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/dalmago/bufsm.git" master:gh-pages

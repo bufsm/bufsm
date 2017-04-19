@@ -33,11 +33,11 @@ Main Components
 header {
   position: fixed;
   z-index: 3;
-  height: 50px;
+  height: 60px;
   width: 100%;
   top: 0;
   left: 0;
-  background-color: #33414a;
+  background-color: #00A2FA;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Force Hardware Acceleration */
@@ -105,7 +105,7 @@ header::before {
     margin-left: 5%;
   }
   .cd-logo img {
-    margin-top: 29px;
+    margin-top: 20px;
   }
 }
 

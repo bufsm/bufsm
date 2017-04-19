@@ -1,6 +1,6 @@
 Django on OpenShift
 ===================
-
+ 
 This git repository helps you get up and running quickly w/ a Django
 installation on OpenShift.  The Django project name used in this repo
 is 'myproject' but you can feel free to change it.  Right now the

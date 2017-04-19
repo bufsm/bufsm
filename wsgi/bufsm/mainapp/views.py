@@ -4,6 +4,7 @@
 # from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect, HttpResponse
 # from django.core import serializers
+import json
 
 def test(request):
     return HttpResponse(json.dumps({"teste": "Funcionando :D"}), content_type='application/json')

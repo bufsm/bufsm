@@ -32,7 +32,8 @@ SECRET_KEY = SECRETS['secret_key']
 # SECRET_KEY = 'u)8_4hs&+%7!0@m5(b1m78-ig*!6+2g42y+gailc&zjcyctelr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == 'True'
+# DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = os.environ['DEBUG'] == 'True'
 # DEBUG = True
 
 from socket import gethostname

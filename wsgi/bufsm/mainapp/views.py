@@ -23,7 +23,7 @@ def linha(request, idLinha):
 
 def token(request):
 
-    WRITE_TOKEN = os.environ.get('WRITE_TOKEN')
+    WRITE_TOKEN = os.environ['WRITE_TOKEN']
 
     return HttpResponse(json.dumps({"token": WRITE_TOKEN}), content_type='application/json')
 

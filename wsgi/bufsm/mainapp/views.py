@@ -5,7 +5,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 # from django.core import serializers
 from .models import Linha, BusPosition
-import json
+import os, json
 
 def linha(request, idLinha):
 
@@ -21,6 +21,11 @@ def linha(request, idLinha):
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
+def token(request):
+
+    WRITE_TOKEN = os.environ.get('WRITE_TOKEN')
+
+    return HttpResponse(json.dumps({"token": WRITE_TOKEN}), content_type='application/json')
 
 def test(request):
     return HttpResponse(json.dumps({"teste": "Funcionando :D"}), content_type='application/json')

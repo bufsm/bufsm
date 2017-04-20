@@ -7,7 +7,7 @@ class BusPosition(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.timestamp.strftime('%d/%m/%y-%H:%M:%S')
+        return self.timestamp.strftime('%d/%m/%y-%H:%M:%S %Z')
 
 class Linha(models.Model):
     id = models.IntegerField(primary_key=True)

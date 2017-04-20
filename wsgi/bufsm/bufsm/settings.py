@@ -119,3 +119,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(WSGI_DIR, 'static')
+
+WRITE_TOKEN = os.environ.get('WRITE_TOKEN', '')

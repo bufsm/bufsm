@@ -2,11 +2,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.test),
-    url(r'^linha/([0-9]+)$', views.linha),
-    url(r'^token$', views.token),
-    # url(r'^sair$', views.sair),
-    # url(r'^home$', views.homeUsuario),
-    # url(r'^usuario/update$', views.atualizaUsuario),
-    # url(r'^usuario/verifica/(?P<username>.+)$', views.verificaUsuario),
+    url(r'^linha/(?P<idLinha>[0-9]+)/get$', views.getLinha),
+    url(r'^linha/(?P<idLinha>[0-9]+)/write/(?P<token>.+)/(?P<lat>.+)/(?P<lng>.+)$', views.writeLinha),
 ]

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import BusPosition, Linha
 
-# Register your models here.
+admin.site.register(BusPosition)
+admin.site.register(Linha)

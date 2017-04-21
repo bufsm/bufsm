@@ -41,7 +41,7 @@ def writeLinha(request, idLinha, token, lat, lng):
 
     return HttpResponse(status=200)
 
-def testLinha(request):
+def testLinha(request, idLinha):
 
     index = Test.objects.all().first()
 

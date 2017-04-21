@@ -45,12 +45,12 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 
 		var iconMarker;
 		var iconBus;
+		var busMarker;
 		var urlAPI = "http://bufsm-dalmago.rhcloud.com/linha/1";
-
 
 		//Iniatialize google maps API and go to the IoT portal to update List of things
 		function initMap() {
-			map = new google.maps.Map(document.getElementById('map'), {center: center, scrollwheel: false, zoom: 15, streetViewControl: false});
+			map = new google.maps.Map(document.getElementById('map'), {center: center, scrollwheel: false, zoom: 17, streetViewControl: false});
 			var centerControlDiv = document.createElement('div');
 			var centerControl = new CenterControl(centerControlDiv, map);
 
@@ -93,6 +93,7 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 					bufsmCurrentLocation.lng = data.lng;
 					console.log(center);
 				});
+				busMarker.setPosition(bufsmCurrentLocation);
 			}, 1000); // repeat forever, polling every 3 seconds
 		}
 		function addBusStop(location) {
@@ -103,7 +104,7 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 			});
 		}
 		function addBus(location) {
-			marker = new google.maps.Marker({
+			busMarker = new google.maps.Marker({
 				position: location,
 				icon: iconBus,
 				map: map

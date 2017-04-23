@@ -3,7 +3,7 @@ script:
   - rm -R test Server README.md
   - mkdir ../pages
   - mv Front-end/* ../pages
-  - echo bufsm.dalmago.xyz > ../pages/CNAME
+  # - echo bufsm.dalmago.xyz > ../pages/CNAME
   # - rm -R Front-end
   # - echo "bufsm.dalmago.xyz" > ../pages/CNAME
 

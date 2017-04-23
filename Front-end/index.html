@@ -1,60 +1,77 @@
 <!doctype html>
 <html lang="en" class="no-js">
-<head>
-<style>
-		#map {
+
+	<head>
+		<style>
+			#map {
 				position: absolute;
 				top: 0;
 				left: 0;
 				bottom: 0;
 				right: 0;
-		}
-</style>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="static/img/bufsm.png">
-	<link rel="manifest" href="/manifest.json">
-	<meta name="theme-color" content="#1957E6">
-	<link rel="stylesheet" href="static/css/reset.css"> <!-- CSS reset -->
-	<link rel="stylesheet" href="static/css/style.css"> <!-- Resource style -->
-	<script src="static/js/modernizr.js"></script> <!-- Modernizr -->
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-<title>BUFSM - Um Baita Ônibus</title>
-</head>
-<body>
-	<header>
-		<div class="cd-logo"><a href="#0"><img src="static/img/bufsmlogo2.png" style="height:40px;width:142px"  alt="Logo"></a></div>
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="static/img/bufsm.png">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="theme-color" content="#1957E6">
 
-		<nav class="cd-main-nav-wrapper">
-			<ul class="cd-main-nav">
-				<li><a href="https://www.facebook.com/bufsm/about/">Quem Somos</a></li>
-				<li><a href="https://www.facebook.com/bufsm/">Bufsm</a></li>
-				<li><a href="https://www.facebook.com/pg/bufsm/about/">Contato</a></li>
-				<li>
-					<a href="#0" class="cd-subnav-trigger"><span>UFSM</span></a>
+		<link rel="apple-touch-icon" href="static/img/bufsm.png">
+		<link rel="apple-touch-startup-image" href="static/img/bufsm.png">
+		<meta name="apple-mobile-web-app-title" content="BUFSM">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="#1957E6">
 
-					<ul>
-						<li class="go-back"><a href="#0">Menu</a></li>
-						<li><a href="http://www.ufsm.br" target="_blank">Site</a></li>
-						<li><a href="http://site.ufsm.br/onibus/" target="_blank">Horarios onibus</a></li>
-						<li><a href="#0" class="placeholder">Placeholder</a></li>
-					</ul>
-				</li>
-			</ul> <!-- .cd-main-nav -->
-		</nav> <!-- .cd-main-nav-wrapper -->
+		<link rel="stylesheet" href="static/css/reset.css">
+		<!-- CSS reset -->
+		<link rel="stylesheet" href="static/css/style.css">
+		<!-- Resource style -->
+		<script src="static/js/modernizr.js"></script>
+		<!-- Modernizr -->
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<title>BUFSM - Um Baita Ônibus</title>
+	</head>
 
-		<a href="#0" class="cd-nav-trigger">Menu<span></span></a>
-	</header>
+	<body>
+		<header>
+			<div class="cd-logo">
+				<a href="#0"><img src="static/img/bufsmlogo2.png" style="height:40px;width:142px" alt="Logo"></a>
+			</div>
 
-	<main class="cd-main-content">
-		<div id="map"></div>
-    <script src="static/index.js"></script>
+			<nav class="cd-main-nav-wrapper">
+				<ul class="cd-main-nav">
+					<li><a href="https://www.facebook.com/bufsm/about/">Quem Somos</a></li>
+					<li><a href="https://www.facebook.com/bufsm/">Bufsm</a></li>
+					<li><a href="https://www.facebook.com/pg/bufsm/about/">Contato</a></li>
+					<li>
+						<a href="#0" class="cd-subnav-trigger"><span>UFSM</span></a>
 
-	</main>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHG-lzvHVs1aP64ont_CAmt5Uk-uRBgzk&callback=initMap"
-	        async defer></script>
+						<ul>
+							<li class="go-back"><a href="#0">Menu</a></li>
+							<li><a href="http://www.ufsm.br" target="_blank">Site</a></li>
+							<li><a href="http://site.ufsm.br/onibus/" target="_blank">Horarios onibus</a></li>
+							<li><a href="#0" class="placeholder">Placeholder</a></li>
+						</ul>
+					</li>
+				</ul>
+				<!-- .cd-main-nav -->
+			</nav>
+			<!-- .cd-main-nav-wrapper -->
 
-<script src="static/js/jquery-2.1.1.js"></script>
-<script src="static/js/main.js"></script> <!-- Resource jQuery -->
-</body>
+			<a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+		</header>
+
+		<main class="cd-main-content">
+			<div id="map"></div>
+			<script src="static/index.js"></script>
+
+		</main>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHG-lzvHVs1aP64ont_CAmt5Uk-uRBgzk&callback=initMap" async defer></script>
+
+		<script src="static/js/jquery-2.1.1.js"></script>
+		<script src="static/js/main.js"></script>
+		<!-- Resource jQuery -->
+	</body>
+
 </html>

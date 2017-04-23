@@ -38,6 +38,8 @@
 		<!-- CSS reset -->
 		<link rel="stylesheet" href="static/css/style.css">
 
+		<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 		<!-- Optional theme -->
@@ -52,16 +54,19 @@
 	</head>
 
 	<body>
-		<header style="background-color:transparent">
-			<div class="cd-logo" style="background-color:#1957E6;margin-left:0 !important;padding:0 5% 0 5%;border-radius: 0 5px 5px 0">
-				<a href="#0"><img src="static/img/bufsmlogo.png" style="height:40px" alt="Logo"></a>
+		<header id="show" style="background-color:transparent">
+			<div data-toggle="tooltip" title="Expanda este Menu" data-placement="bottom"  class="cd-logo" style="background-color:#1957E6;color:white !important;margin-left:0 !important;padding:0 5% 0 5%;border-radius: 0 5px 5px 0">
+				<a  href="#"><img src="static/img/bufsmlogo.png" style="height:40px;display:block;float:left" alt="Logo"></a>
+				<div style="margin-top:20px;margin-left:10px;float:right">
+						<a href="#0" style="color:white;font-size:28px;"><i class="fa fa-arrow-right"></i> </a>
+			</div>
+			<div style="clear:both"></div>
 			</div>
 		</header>
 		<header id="hide">
-			<div class="cd-logo" >
-				<a href="#0"><img src="static/img/bufsmlogo2.png" style="height:40px;width:142px" alt="Logo"></a>
+			<div data-toggle="tooltip" title="Esconda este Menu" data-delay=100 data-placement="bottom" class="cd-logo" style="background-color:#1957E6;color:white !important;margin-left:0 !important;padding:0 5% 0 5%;border-radius: 0 5px 5px 0">
+				<a href="#0"><img src="static/img/bufsmlogo2.png" style="height:40px;display:block" alt="Logo"></a>
 			</div>
-
 			<nav class="cd-main-nav-wrapper">
 				<ul class="cd-main-nav">
 					<li><a href="#" data-toggle="modal" data-target="#horarioModal">Horários de Saída</a></li>

@@ -1,4 +1,4 @@
-var leaveTime = ["01:00","01:10","01:20", "01:58","07:30", "08:00", "08:30", "09:00",
+var leaveTime = ["07:30", "08:00", "08:30", "09:00",
     "09:30", "10:00", "11:00", "11:30", "12:30", "13:00",
     "13:30", "14:00", "15:00", "16:00", "16:30",
     "17:00", "17:30", "18:30", "19:30", "20:30", "21:30", "22:00"
@@ -179,7 +179,6 @@ var busMarker;
 var urlAPI = "http://bufsm-dalmago.rhcloud.com/linha/1";
 
 var actualIndex = -1;
-var timeStamp;
 
 //Iniatialize google maps API and go to the IoT portal to update List of things
 function initMap() {
@@ -192,11 +191,6 @@ function initMap() {
 				disableDefaultUI: true,
         streetViewControl: false
     });
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
-
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
 
     var busPath = new google.maps.Polyline({
         path: pointsRoute,
@@ -232,8 +226,7 @@ function updatePosition() {
         $.get(urlAPI, function(data, status) {
             bufsmCurrentLocation.lat = data.lat;
             bufsmCurrentLocation.lng = data.lng;
-						timeStamp = data.timeNow;
-						updateDateSchedule();
+						updateDateSchedule(data.timeNow);
         });
         busMarker.setPosition(bufsmCurrentLocation);
     }, 1000); // repeat forever, polling every 1 seconds
@@ -255,38 +248,17 @@ function addBus(location) {
     });
 }
 
-function CenterControl(controlDiv, map) {
-
-    // Set CSS for the control border.
-    var controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = '#fff';
-    controlUI.style.border = '2px solid #fff';
-    controlUI.style.borderRadius = '3px';
-    controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.marginBottom = '22px';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to recenter the map';
-    controlDiv.appendChild(controlUI);
-
-    // Set CSS for the control interior.
-    var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
-    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '16px';
-    controlText.style.lineHeight = '38px';
-    controlText.style.paddingLeft = '5px';
-    controlText.style.paddingRight = '5px';
-    controlText.innerHTML = 'BUFSM, cadê tu?';
-    controlUI.appendChild(controlText);
-
-    // Setup the click event listeners: simply set the map to Chicago.
-    controlUI.addEventListener('click', function() {
-        map.setCenter(bufsmCurrentLocation);
-    });
-
-}
 $(document).ready(function() {
+
+
+		// Setup the click event listeners: simply set the map to Chicago.
+	 	$('#findBus').click(function(e) {
+
+		 	e.preventDefault();
+ 			map.setCenter(bufsmCurrentLocation);
+		});
+
+
     $(leaveTime).each(function(i, e) {
         $('.modal-body ul').append('<li>' + e + '</li>');
     });
@@ -305,11 +277,15 @@ $(document).ready(function() {
 
 });
 
-function updateDateSchedule(){
+function updateDateSchedule(timeStamp){
+
+	//$('#map > div > div > div:nth-child(2), #map > div > div > div:nth-child(4), #map > div > div > div:nth-child(5), #map > div > div > div:nth-child(6), #map > div > div > div:nth-child(8)').hide();
+
+	var currentHour = parseInt(timeStamp.slice(11,13))*1000+parseInt(timeStamp.slice(14,16));
+
 	var index = 0;
 	var i = 0;
 	for (i = 0; i < leaveTime.length-1; i++) {
-			var currentHour = parseInt(timeStamp.slice(11,13))*1000+parseInt(timeStamp.slice(14,16));
 			var leaveHour = parseInt(leaveTime[i].slice(0, 2))*1000 + parseInt(leaveTime[i].slice(3, 5));
 			var leaveHourNext = parseInt(leaveTime[i+1].slice(0, 2))*1000 + parseInt(leaveTime[i+1].slice(3, 5));
 			if( currentHour < leaveHourNext && currentHour >= leaveHour ){
@@ -322,11 +298,9 @@ function updateDateSchedule(){
 	}
 	if(index !== actualIndex){
 		actualIndex = index;
-		$('.modal-body ul li').siblings().find('span').remove();
-		$('.modal-body ul li').siblings().removeClass("busActive");
+		$('.modal-body ul li').siblings().removeClass("busActive").find('span').remove();
+		$('.modal-body ul li:nth-child(' + ((index%leaveTime.length)+1)+ ')').addClass("busActive").append('<span style="font-weight:bold;color:#880000"> - Próxima Saída </span>')
 
-		$('.modal-body ul li:nth-child(' + ((index%leaveTime.length)+1)+ ')').append('<span style="font-weight:bold;color:#880000"> - Próxima Saída </span>')
-		$('.modal-body ul li:nth-child(' + ((index %leaveTime.length)+1)+ ')').addClass("busActive");
 	}
 
 }

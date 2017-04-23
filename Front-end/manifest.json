@@ -2,7 +2,7 @@
     "name": "BUFSM",
     "short_name": "BUFSM",
     "icons": [{
-            "src": "static/img/bufsm.png",
+            "src": "static/img/bufsm3.png",
             "type": "image/png"
         }],
     "start_url": "/",

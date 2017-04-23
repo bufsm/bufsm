@@ -188,7 +188,6 @@ function initMap() {
         gestureHandling: 'greedy',
         scrollwheel: false,
         zoom: 17,
-				disableDefaultUI: true,
         streetViewControl: false
     });
 

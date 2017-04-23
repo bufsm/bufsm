@@ -1,0 +1,12 @@
+{
+    "name": "BUFSM",
+    "short_name": "BUFSM",
+    "icons": [{
+            "src": "static/img/bufsm.png",
+            "type": "image/png"
+        }],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#00A2FA",
+    "theme_color": "#00A2FA"
+}

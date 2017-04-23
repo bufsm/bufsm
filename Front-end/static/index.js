@@ -50,7 +50,7 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 
 		//Iniatialize google maps API and go to the IoT portal to update List of things
 		function initMap() {
-			map = new google.maps.Map(document.getElementById('map'), {center: center, scrollwheel: false, zoom: 17, streetViewControl: false});
+			map = new google.maps.Map(document.getElementById('map'), {center: center,fullscreenControl: true, gestureHandling: 'greedy', scrollwheel: false, zoom: 17, streetViewControl: false});
 			var centerControlDiv = document.createElement('div');
 			var centerControl = new CenterControl(centerControlDiv, map);
 

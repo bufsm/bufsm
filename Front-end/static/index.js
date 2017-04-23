@@ -76,7 +76,7 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 				origin: new google.maps.Point(0,0), // origin
 				anchor: new google.maps.Point(0, 0) // anchor
 			};
-			for(i = 0; i<5; i++){
+			for(i = 0; i< pointsStop.lenght; i++){
 				addBusStop(pointsStop[i]);
 			}
 			addBus(bufsmCurrentLocation);
@@ -94,7 +94,7 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 					console.log(center);
 				});
 				busMarker.setPosition(bufsmCurrentLocation);
-			}, 1000); // repeat forever, polling every 3 seconds
+			}, 1000); // repeat forever, polling every 1 seconds
 		}
 		function addBusStop(location) {
 			marker = new google.maps.Marker({

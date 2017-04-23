@@ -6,6 +6,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from .models import Linha, BusPosition, Test
+from datetime import datetime
 import os, json
 
 def getLinha(request, idLinha):
@@ -18,7 +19,8 @@ def getLinha(request, idLinha):
     lastPosition = linha.lastKnownPosition
 
     obj = {"lat": lastPosition.lat, "lng": lastPosition.lng,
-            "timestamp": lastPosition.timestamp.isoformat()}
+            "timestamp": lastPosition.timestamp.isoformat(),
+            "timeNow": datetime.now().isoformat()}
 
     return HttpResponse(json.dumps(obj), content_type='application/json')
 
@@ -86,6 +88,7 @@ def testLinha(request, idLinha):
         index.index = 0
 
     res = testPoints[index.index]
+    res['timeNow'] = datetime.now().isoformat()
 
     index.index += 1
     index.save()

@@ -578,3 +578,11 @@ html, body, #map-canvas {
   margin: 0px;
   padding: 0px
 }
+.busActive, .busActive span {
+  background-color: #1957E6;
+  color: white !important;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}

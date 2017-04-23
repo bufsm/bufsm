@@ -1,7 +1,7 @@
-var leaveTime = ["07:30", "08:00", "08:30", "09:00",
+var leaveTime = ["01:00","01:10","01:20", "01:58","07:30", "08:00", "08:30", "09:00",
     "09:30", "10:00", "11:00", "11:30", "12:30", "13:00",
     "13:30", "14:00", "15:00", "16:00", "16:30",
-    "17:00", "17:30", "18:30", "19:30", "20:30", "21:30", "23:00"
+    "17:00", "17:30", "18:30", "19:30", "20:30", "21:30", "22:00"
 ];
 
 var center = {
@@ -178,6 +178,8 @@ var iconBus;
 var busMarker;
 var urlAPI = "http://bufsm-dalmago.rhcloud.com/linha/1";
 
+var actualIndex = -1;
+
 //Iniatialize google maps API and go to the IoT portal to update List of things
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -282,36 +284,42 @@ function CenterControl(controlDiv, map) {
 
 }
 $(document).ready(function() {
-
-    var index = 0;
-		var time;
-
     $(leaveTime).each(function(i, e) {
-
         $('.modal-body ul').append('<li>' + e + '</li>');
     });
-    var urlDate = "http://api.geonames.org/timezoneJSON?formatted=true&lat=-29.710173&lng=-53.716594&username=demo&style=full";
-		$.get(urlDate, function(data, status) {
-				 time = data.time;
-				console.log(time);
-				var i = 0;
-				for (i = 0; i < leaveTime.length-1; i++) {
-						var currentHour = parseInt(time.slice(11,13))*1000+parseInt(time.slice(14,16));
-						var leaveHour = parseInt(leaveTime[i].slice(0, 2))*1000 + parseInt(leaveTime[i].slice(3, 5));
-						var leaveHour2 = parseInt(leaveTime[i+1].slice(0, 2))*1000 + parseInt(leaveTime[i+1].slice(3, 5));
-						if( currentHour < leaveHour2 && currentHour >= leaveHour ){
-							index = i+1;
-							break;
-						}
-						else {
-							index = i+2;
-						}
-
-				}
-
-		});
-
-
-    $('.modal-body ul li:nth-child(' + ((index + 1) % leaveTime.length)+ ')').append(' - <span style="font-weight:bold;color:#880000"> Próxima Saída </span>')
+		updateDateSchedule();
+		window.setInterval(function() {
+				updateDateSchedule();
+		}, 5000); // repeat forever, polling every 1 seconds
 
 });
+
+function updateDateSchedule(){
+	var index = 0;
+	var time;
+	var urlDate = "http://api.geonames.org/timezoneJSON?formatted=true&lat=-29.710173&lng=-53.716594&username=demo&style=full";
+	$.get(urlDate, function(data, status) {
+			time = data.time;
+			var i = 0;
+			for (i = 0; i < leaveTime.length-1; i++) {
+					var currentHour = parseInt(time.slice(11,13))*1000+parseInt(time.slice(14,16));
+					var leaveHour = parseInt(leaveTime[i].slice(0, 2))*1000 + parseInt(leaveTime[i].slice(3, 5));
+					var leaveHourNext = parseInt(leaveTime[i+1].slice(0, 2))*1000 + parseInt(leaveTime[i+1].slice(3, 5));
+					if( currentHour < leaveHourNext && currentHour >= leaveHour ){
+						index = i+1;
+						break;
+					}
+					else {
+						index = i+2;
+					}
+			}
+			if(index !== actualIndex){
+				actualIndex = index;
+				$('.modal-body ul li').siblings().find('span').remove();
+				$('.modal-body ul li').siblings().removeClass("busActive");
+
+				$('.modal-body ul li:nth-child(' + ((index%leaveTime.length)+1)+ ')').append('<span style="font-weight:bold;color:#880000"> - Próxima Saída </span>')
+				$('.modal-body ul li:nth-child(' + ((index %leaveTime.length)+1)+ ')').addClass("busActive");
+			}
+	});
+}

@@ -176,7 +176,7 @@ var pointsStop = [{
 var iconMarker;
 var iconBus;
 var busMarker;
-var urlAPI = "http://bufsm-dalmago.rhcloud.com/linha/1";
+var urlAPI = "https://bufsm-dalmago.rhcloud.com/linha/1";
 
 var actualIndex = -1;
 

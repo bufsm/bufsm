@@ -10,6 +10,17 @@
 				bottom: 0;
 				right: 0;
 			}
+
+			#horarioModal ul {
+
+				margin-left: 20px;
+			}
+
+			#horarioModal ul li {
+				list-style-type: circle;
+				line-height: 25px;
+				font-size: 16px;
+			}
 		</style>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +37,13 @@
 		<link rel="stylesheet" href="static/css/reset.css">
 		<!-- CSS reset -->
 		<link rel="stylesheet" href="static/css/style.css">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+		<!-- Latest compiled and minified JavaScript -->
 		<!-- Resource style -->
 		<script src="static/js/modernizr.js"></script>
 		<!-- Modernizr -->
@@ -41,16 +59,16 @@
 
 			<nav class="cd-main-nav-wrapper">
 				<ul class="cd-main-nav">
+					<li><a href="#" data-toggle="modal" data-target="#horarioModal">Horários de Saída</a></li>
 					<li><a href="https://www.facebook.com/bufsm/about/">Quem Somos</a></li>
 					<li><a href="https://www.facebook.com/bufsm/">Bufsm</a></li>
 					<li><a href="https://www.facebook.com/pg/bufsm/about/">Contato</a></li>
 					<li>
 						<a href="#0" class="cd-subnav-trigger"><span>UFSM</span></a>
-
 						<ul>
 							<li class="go-back"><a href="#0">Menu</a></li>
 							<li><a href="http://www.ufsm.br" target="_blank">Site</a></li>
-							<li><a href="http://site.ufsm.br/onibus/" target="_blank">Horarios onibus</a></li>
+							<li><a href="http://site.ufsm.br/onibus/" target="_blank">Horários Ônibus</a></li>
 							<li><a href="#0" class="placeholder">Placeholder</a></li>
 						</ul>
 					</li>
@@ -64,14 +82,32 @@
 
 		<main class="cd-main-content">
 			<div id="map"></div>
-			<script src="static/index.js"></script>
-
 		</main>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHG-lzvHVs1aP64ont_CAmt5Uk-uRBgzk&callback=initMap" async defer></script>
 
+		<div id="horarioModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Horários de Saída</h4>
+					</div>
+					<div class="modal-body">
+						<ul></ul>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
 		<script src="static/js/jquery-2.1.1.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHG-lzvHVs1aP64ont_CAmt5Uk-uRBgzk&callback=initMap" async defer></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="static/index.js"></script>
 		<script src="static/js/main.js"></script>
-		<!-- Resource jQuery -->
 	</body>
 
 </html>

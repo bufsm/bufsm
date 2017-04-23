@@ -22,7 +22,7 @@ body {
 }
 
 a {
-  color: #7e4d7e;
+  color: #07AE4D;
   text-decoration: none;
 }
 
@@ -385,7 +385,7 @@ header::before {
   }
   .cd-main-nav li ul {
     height: 80px;
-    background-color: #7e4d7e;
+    background-color: #07AE4D;
     /* padding left = logo size + logo left position*/
     padding: 0 5% 0 calc(5% + 124px);
     -webkit-transform: translateY(-80px);

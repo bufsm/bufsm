@@ -76,7 +76,7 @@ var pointsRoute = [{lat: -29.710173, lng: -53.716594},
 				origin: new google.maps.Point(0,0), // origin
 				anchor: new google.maps.Point(0, 0) // anchor
 			};
-			for(i = 0; i< pointsStop.lenght; i++){
+			for(i = 0; i< pointsStop.lenght(); i++){
 				addBusStop(pointsStop[i]);
 			}
 			addBus(bufsmCurrentLocation);

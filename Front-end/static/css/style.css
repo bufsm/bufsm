@@ -195,6 +195,7 @@ header::before {
 .cd-main-nav {
   position: fixed;
   z-index: 1;
+  color:white;
   top: 0;
   right: 0;
   width: 260px;
@@ -328,6 +329,8 @@ header::before {
   .cd-main-nav li a {
     display: inline-block;
     padding: .8em;
+    color:white !important;
+    text-decoration: none;
     line-height: 1;
     font-size: 1.6rem;
     border-bottom: none;

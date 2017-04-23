@@ -292,6 +292,12 @@ $(document).ready(function() {
 				updateDateSchedule();
 		}, 5000); // repeat forever, polling every 1 seconds
 
+		$('.cd-logo').click(function(){
+			$("#hide").animate({width:'toggle'},350);
+
+		});
+
+
 });
 
 function updateDateSchedule(){

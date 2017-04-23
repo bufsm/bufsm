@@ -17,6 +17,6 @@ class Linha(models.Model):
     def __str__(self):
         return "Linha " + str(self.id)
 
-class Test(models.Model): # Temporary model, just for test
-
-    index = models.IntegerField()
+# class Test(models.Model): # Temporary model, just for test
+#
+#     index = models.IntegerField()

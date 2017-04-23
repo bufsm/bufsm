@@ -4,8 +4,6 @@ var leaveTime = ["07:30", "08:00", "08:30", "09:00",
     "17:00", "17:30", "18:30", "19:30", "20:30", "21:30", "23:00"
 ];
 
-var d = new Date("2015-09-09 16:40:00");
-
 var center = {
     lat: -29.710173,
     lng: -53.716594
@@ -286,30 +284,34 @@ function CenterControl(controlDiv, map) {
 $(document).ready(function() {
 
     var index = 0;
+		var time;
 
     $(leaveTime).each(function(i, e) {
 
         $('.modal-body ul').append('<li>' + e + '</li>');
     });
+    var urlDate = "http://api.geonames.org/timezoneJSON?formatted=true&lat=-29.710173&lng=-53.716594&username=demo&style=full";
+		$.get(urlDate, function(data, status) {
+				 time = data.time;
+				console.log(time);
+				var i = 0;
+				for (i = 0; i < leaveTime.length-1; i++) {
+						var currentHour = parseInt(time.slice(11,13))*1000+parseInt(time.slice(14,16));
+						var leaveHour = parseInt(leaveTime[i].slice(0, 2))*1000 + parseInt(leaveTime[i].slice(3, 5));
+						var leaveHour2 = parseInt(leaveTime[i+1].slice(0, 2))*1000 + parseInt(leaveTime[i+1].slice(3, 5));
+						if( currentHour < leaveHour2 && currentHour >= leaveHour ){
+							index = i+1;
+							break;
+						}
+						else {
+							index = i+2;
+						}
 
-    var i = 0;
-    for (i = 0; i < leaveTime.length; i++) {
+				}
 
-        if (parseInt(leaveTime[i].slice(0, 2)) >= parseInt(d.getHours())) {
-
-            console.log(parseInt(d.getMinutes()) + ' - ' + parseInt(leaveTime[i].slice(3, 5)));
-
-            if (parseInt(leaveTime[i].slice(3, 5)) < parseInt(d.getMinutes())) {
-                index = i + 1;
-                break;
-            }
+		});
 
 
-
-        }
-
-    }
-
-    $('.modal-body ul li:nth-child(' + (index + 1) + ')').append(' - <span style="font-weight:bold;color:#880000"> Próxima Saída </span>')
+    $('.modal-body ul li:nth-child(' + ((index + 1) % leaveTime.length)+ ')').append(' - <span style="font-weight:bold;color:#880000"> Próxima Saída </span>')
 
 });

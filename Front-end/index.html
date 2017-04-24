@@ -1,29 +1,14 @@
-<!doctype html>
-<html lang="en" class="no-js">
+<!DOCTYPE html>
+<html lang="pt-br">
 
 	<head>
-		<style>
-			#map {
-				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				right: 0;
-			}
-
-			#horarioModal ul {
-
-				margin-left: 20px;
-			}
-
-			#horarioModal ul li {
-				list-style-type: circle;
-				line-height: 25px;
-				font-size: 16px;
-			}
-		</style>
+		<title>BUFSM - Um Baita Ônibus</title>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name=”description” content="BUFSM é um projeto voluntário desenvolvido por alunos do curso de Eng. Comp. para melhorar o transporte interno na UFSM." />
+		<meta name="keywords" content="bufsm,ufsm,computação,transporte,onibus,campus,engenharia">
+		<meta name="author" content="Fabrício Bottega, Iury Cleveston, Josias Orlando, Matheus Dal Mago, Matheus Neis">
+
 		<link rel="icon" href="static/img/bufsm3.png">
 		<link rel="manifest" href="/manifest.json">
 		<meta name="theme-color" content="#1957E6">
@@ -35,32 +20,23 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="#1957E6">
 
 		<link rel="stylesheet" href="static/css/reset.css">
-		<!-- CSS reset -->
 		<link rel="stylesheet" href="static/css/style.css">
-
 		<link rel="stylesheet" href="static/css/font-awesome.min.css">
-
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-		<!-- Optional theme -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-		<!-- Latest compiled and minified JavaScript -->
-		<!-- Resource style -->
 		<script src="static/js/modernizr.js"></script>
-		<!-- Modernizr -->
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-		<title>BUFSM - Um Baita Ônibus</title>
+
 	</head>
 
 	<body>
 		<header id="show" style="background-color:transparent">
-			<div data-toggle="tooltip" title="Expanda este Menu" data-placement="bottom"  class="cd-logo" style="background-color:#1957E6;color:white !important;margin-left:0 !important;padding:0 5% 0 5%;border-radius: 0 5px 5px 0">
-				<a  href="#"><img src="static/img/bufsmlogo.png" style="height:40px;display:block;float:left" alt="Logo"></a>
+			<div data-toggle="tooltip" title="Expanda este Menu" data-placement="bottom" class="cd-logo" style="background-color:#1957E6;color:white !important;margin-left:0 !important;padding:0 5% 0 5%;border-radius: 0 5px 5px 0">
+				<a href="#"><img src="static/img/bufsmlogo.png" style="height:40px;display:block;float:left" alt="Logo"></a>
 				<div style="margin-top:20px;margin-left:10px;float:right">
-						<a href="#0" style="color:white;font-size:28px;"><i class="fa fa-arrow-right"></i> </a>
-			</div>
-			<div style="clear:both"></div>
+					<a href="#0" style="color:white;font-size:28px;"><i class="fa fa-arrow-right"></i></a>
+				</div>
+				<div style="clear:both"></div>
 			</div>
 		</header>
 		<header id="hide">
@@ -83,22 +59,20 @@
 						</ul>
 					</li>
 				</ul>
-				<!-- .cd-main-nav -->
 			</nav>
-			<!-- .cd-main-nav-wrapper -->
 
-			<a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+			<a href="#" class="cd-nav-trigger"><span></span></a>
 		</header>
 
 		<main class="cd-main-content">
 			<div id="map"></div>
 		</main>
 
-<div style="z-index: 10; position: absolute; bottom: 26px; left: 0px;">
-	<div id="findBus" title="Click to recenter the map" style="background-color: rgb(25, 87, 230); border: 2px solid rgb(25, 87, 230); color: white; border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.298039) 0px 2px 6px; cursor: pointer; margin-bottom: 22px; text-align: center;">
-		<div style="color: white; font-family: Roboto, Arial, sans-serif; font-size: 16px; line-height: 38px; padding-left: 5px; padding-right: 5px;">BUFSM, cadê tu?</div>
-	</div>
-</div>
+		<div style="z-index: 10; position: absolute; bottom: 26px; left: 0px;">
+			<div id="findBus" title="Encontre o BUFSM" style="background-color: rgb(25, 87, 230); border: 2px solid rgb(25, 87, 230); color: white; border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.298039) 0px 2px 6px; cursor: pointer; margin-bottom: 22px; text-align: center;">
+				<span style="color: white; font-family: Roboto, Arial, sans-serif; font-size: 16px; line-height: 38px; padding-left: 5px; padding-right: 5px;">BUFSM, cadê tu?</span>
+			</div>
+		</div>
 
 		<div id="horarioModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
@@ -120,6 +94,7 @@
 			</div>
 		</div>
 		<script src="static/js/jquery-2.1.1.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHG-lzvHVs1aP64ont_CAmt5Uk-uRBgzk&callback=initMap" async defer></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="static/index.js"></script>

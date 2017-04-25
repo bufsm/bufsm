@@ -197,6 +197,7 @@ $(document).ready(function() {
     $('#findBus').click(function(e) {
         e.preventDefault();
         map.setCenter(bufsmCurrentLocation);
+        map.setZoom(17);
     });
 
     //Populate the modal with all the departure times

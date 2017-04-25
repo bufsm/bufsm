@@ -620,7 +620,7 @@ header::before {
 }
 
 html, body, #map-canvas {
-    height: 700px;
+    height: 100%;
     margin: 0px;
     padding: 0px
 }
@@ -645,20 +645,40 @@ html, body, #map-canvas {
 
 .busActive, .busActive span {
     background-color: #1957E6;
-    color: white !important;
     padding: 10px;
+    color: white;
     border-radius: 5px;
+    margin: 1rem 0;
     text-align: center;
     font-weight: bold;
 }
 
-.close{
-  color: white !important;
-  font-weight: bold;
-  opacity: 1 !important;
+#findBus {
+    background-color: rgb(25, 87, 230);
+    border: 2px solid rgb(25, 87, 230);
+    color: white;
+    border-radius: 0 5px 5px 0;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 2px 6px;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
-#toast-container{
+#findBus span {
+    color: white;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 38px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
 
-  margin-top:7rem;
+.close {
+    color: white !important;
+    font-weight: bold;
+    opacity: 1 !important;
+}
+
+#toast-container {
+    margin-top: 7rem;
 }

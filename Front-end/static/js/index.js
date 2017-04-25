@@ -204,15 +204,29 @@ $(document).ready(function() {
         $('.modal-body ul').append('<li>' + e + '</li>');
     });
 
+    var toggle = false;
+
     //Hide and show the menubar when clicked
     $('.cd-logo').click(function() {
+
         $("#hide").animate({
             width: 'toggle'
         }, 350);
-        $('#show div[data-toggle="tooltip"]').tooltip('toggle');
-        window.setTimeout(function() {
+
+        $("#show").animate({
+            width: 'toggle'
+        }, 350);
+
+        if (!toggle) {
+
             $('#show div[data-toggle="tooltip"]').tooltip('toggle');
-        }, 3000);
+            window.setTimeout(function() {
+                $('#show div[data-toggle="tooltip"]').tooltip('toggle');
+            }, 3000);
+
+            toggle = true;
+        }
+
     });
 
     //Show the tooltip for the menubar and hide it after 3s
@@ -230,6 +244,9 @@ $(document).ready(function() {
     //mobile version - open/close navigation
     $('.cd-nav-trigger').on('click', function(event) {
         event.preventDefault();
+
+        toastr.remove()
+
         if ($('header').hasClass('nav-is-visible')) $('.moves-out').removeClass('moves-out');
 
         $('header').toggleClass('nav-is-visible');
@@ -323,12 +340,15 @@ function initMap() {
 
     //Update the bus position
     updateBusPosition(busMarker);
+
 }
 
 function updateBusPosition(busMarker) {
 
     //Every 1s
     window.setInterval(function() {
+
+        $('.gmnoprint').hide();
 
         //Perform the ajax get for new data
         $.get(urlAPI, function(data, status) {
@@ -383,7 +403,7 @@ function updateDeparture(timeStamp) {
 
         //Update the modal information, setting the new departure time
         $('.modal-body ul li').siblings().removeClass("busActive").find('span').remove();
-        $('.modal-body ul li:nth-child(' + ((index % leaveTime.length) + 1) + ')').addClass("busActive").append('<span style="font-weight:bold;color:#880000"> - Próxima Saída </span>')
+        $('.modal-body ul li:nth-child(' + ((index % leaveTime.length) + 1) + ')').addClass("busActive").append('<span style="font-weight:bold;"> - Próxima Saída </span>')
 
     }
 

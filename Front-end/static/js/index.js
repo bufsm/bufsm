@@ -181,6 +181,7 @@ var isMobile = false;
 var map;
 const urlAPI = "https://bufsm-dalmago.rhcloud.com/linha/1";
 var actualIndex = -1;
+var error = false;
 
 $(document).ready(function() {
 
@@ -367,9 +368,11 @@ function initMap() {
             user.setPosition(pos);
 
         }, function() {
+            error = true;
             toastr.error('<strong>Habilite sua Localização (GPS)</strong>');
         });
     } else {
+        error = true;
         toastr.error('<strong>Habilite sua Localização (GPS)</strong>');
     }
 
@@ -430,7 +433,10 @@ function updateDeparture(timeStamp) {
         actualIndex = index;
 
         //Update the notification system
-        toastr.clear()
+        if (error) {
+            toastr.clear();
+            error = false;
+        }
         toastr.success('Próximo Ônibus sai às <strong>' + leaveTime[(index % leaveTime.length)] + '</strong>');
 
         //Update the modal information, setting the new departure time

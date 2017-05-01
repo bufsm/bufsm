@@ -12,6 +12,10 @@ var bufsmCurrentLocation = {
     lat: -29.710173,
     lng: -53.716594
 };
+var userCurrentLocation = {
+    lat: -29.710173,
+    lng: -53.716594
+};
 var i;
 var pointsRoute = [{
         lat: -29.710173,
@@ -339,6 +343,16 @@ function initMap() {
         map: map
     });
 
+    //Add the user to the map
+    var user = new google.maps.Marker({
+        position: userCurrentLocation,
+        icon: {
+            url: "static/img/user.png", // url
+            scaledSize: new google.maps.Size(32, 32), // scaled size
+        },
+        map: map
+    });
+
     //Update the bus position
     updateBusPosition(busMarker);
 
@@ -350,15 +364,7 @@ function initMap() {
                 lng: position.coords.longitude
             };
 
-            var user = new google.maps.Marker({
-                position: pos,
-                icon: {
-                    url: "static/img/user.png", // url
-                    scaledSize: new google.maps.Size(32, 32), // scaled size
-                },
-                map: map
-            });
-
+            user.setPosition(pos);
 
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -376,18 +382,6 @@ function initMap() {
         infoWindow.open(map);
     }
 
-}
-
-//Defer Css loading
-function loadStyleSheet(src) {
-    if (document.createStyleSheet) document.createStyleSheet(src);
-    else {
-        var stylesheet = document.createElement('link');
-        stylesheet.href = src;
-        stylesheet.rel = 'stylesheet';
-        stylesheet.type = 'text/css';
-        document.getElementsByTagName('head')[0].appendChild(stylesheet);
-    }
 }
 
 function updateBusPosition(busMarker) {

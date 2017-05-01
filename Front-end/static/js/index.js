@@ -433,7 +433,7 @@ function updateDeparture(timeStamp) {
         actualIndex = index;
 
         //Update the notification system
-        if (error) {
+        if (!error) {
             toastr.clear();
             error = false;
         }

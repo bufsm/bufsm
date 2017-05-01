@@ -183,6 +183,8 @@ const urlAPI = "https://bufsm-dalmago.rhcloud.com/linha/1";
 var actualIndex = -1;
 var error = false;
 
+var firstTime = true;
+
 $(document).ready(function() {
 
     //Check if the device is mobile
@@ -296,6 +298,7 @@ $(document).ready(function() {
 //Iniatialize google maps API and go to the IoT portal to update List of things
 function initMap() {
 
+   var busMarker;
     //Create the map
     map = new google.maps.Map(document.getElementById('map'), {
         center: center,
@@ -305,6 +308,18 @@ function initMap() {
         zoom: 17,
         streetViewControl: false
     });
+    //Add the bus to the map
+    var busMarker = new google.maps.Marker({
+        position: bufsmCurrentLocation,
+        icon: {
+            url: "static/img/bufsm2.png", // url
+            scaledSize: new google.maps.Size(25, 32), // scaled size
+            origin: new google.maps.Point(0, 0), // origin
+            anchor: new google.maps.Point(0, 0) // anchor
+        },
+        map: map
+    });
+    updateBusPosition(busMarker);
 
     //Add the bus path to the map
     new google.maps.Polyline({
@@ -332,17 +347,7 @@ function initMap() {
         });
     }
 
-    //Add the bus to the map
-    var busMarker = new google.maps.Marker({
-        position: bufsmCurrentLocation,
-        icon: {
-            url: "static/img/bufsm2.png", // url
-            scaledSize: new google.maps.Size(25, 32), // scaled size
-            origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0) // anchor
-        },
-        map: map
-    });
+
 
     //Add the user to the map
     var user = new google.maps.Marker({
@@ -354,8 +359,6 @@ function initMap() {
         map: map
     });
 
-    //Update the bus position
-    updateBusPosition(busMarker);
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -394,10 +397,14 @@ function updateBusPosition(busMarker) {
             updateDeparture(data.timeNow);
         });
 
+        if (firstTime){
+          map.setCenter(bufsmCurrentLocation);
+          firstTime = False;
+        }
         //Update the bus position on the map
         busMarker.setPosition(bufsmCurrentLocation);
 
-    }, 1000);
+    }, 500);
 }
 
 function updateDeparture(timeStamp) {

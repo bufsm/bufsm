@@ -342,6 +342,40 @@ function initMap() {
     //Update the bus position
     updateBusPosition(busMarker);
 
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            var user = new google.maps.Marker({
+                position: pos,
+                icon: {
+                    url: "static/img/user.png", // url
+                    scaledSize: new google.maps.Size(32, 32), // scaled size
+                },
+                map: map
+            });
+
+
+        }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+
 }
 
 //Defer Css loading

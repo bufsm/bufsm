@@ -392,15 +392,15 @@ function updateBusPosition(busMarker) {
         $.get(urlAPI, function(data, status) {
             bufsmCurrentLocation.lat = data.lat;
             bufsmCurrentLocation.lng = data.lng;
-
             //Update the bus departure based on the server datetime
             updateDeparture(data.timeNow);
+            if (firstTime){
+              map.setCenter(bufsmCurrentLocation);
+              firstTime = false;
+            }
         });
 
-        if (firstTime){
-          map.setCenter(bufsmCurrentLocation);
-          firstTime = False;
-        }
+
         //Update the bus position on the map
         busMarker.setPosition(bufsmCurrentLocation);
 

@@ -59,7 +59,7 @@ void wait_module_init() {
 #else
   while (waitFor("CREG: 1\r\n", 0, 15000) != 1) {
 #endif
-    // module_reset();
+    gprs_powerCycle();
     uart_buffer = "";
     Serial.flush();
   }
@@ -273,20 +273,18 @@ int waitFor(const char *ans, const char *error, unsigned int tempo) {
   return 0;
 }
 
-//void gprs_reset(){
-//  digitalWrite(MODULE_RESET, 1);
-//  delay(20);
-//  digitalWrite(MODULE_RESET, 0);
-//}
-//
-//void gprs_powerCycle(){
-//  gprs_reset();
-//
-//  delay(500);
-//
-//  digitalWrite(MODULE_PWR, 1);
-//  delay(2000);
-//  digitalWrite(MODULE_PWR, 0);
-//}
+void gprs_reset() {
+  digitalWrite(MODULE_RESET, 1);
+  delay(400);
+  digitalWrite(MODULE_RESET, 0);
+}
 
+void gprs_powerCycle() {
+  gprs_reset();
 
+  delay(500);
+
+  digitalWrite(MODULE_PWR, 1);
+  delay(2000);
+  digitalWrite(MODULE_PWR, 0);
+}

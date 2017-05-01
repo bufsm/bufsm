@@ -6,14 +6,15 @@
 coords_t coord;
 
 void setup() {
-  //  pinMode(MODULE_PWR, OUTPUT);
-  //  digitalWrite(MODULE_PWR, 0);
-  //  pinMode(MODULE_RESET, OUTPUT);
-  //  digitalWrite(MODULE_RESET, 0);
+  pinMode(MODULE_PWR, OUTPUT);
+  digitalWrite(MODULE_PWR, 0);
+  pinMode(MODULE_RESET, OUTPUT);
+  digitalWrite(MODULE_RESET, 0);
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
   pinMode(BLUE_LED, OUTPUT);
 
+  gprs_reset();
 
 #ifdef DEBUG
   Serial2.begin(115200);
@@ -22,20 +23,20 @@ void setup() {
   Serial.setTimeout(300);
   Serial.flush();
 
-  //  gprs_powerCycle();
+  gprs_powerCycle();
 
   wait_module_init();
 
   gps_init();
 
   gps_get_coordinates(&coord);
-  while(! gprs_init());
+  while (! gprs_init());
   //gprs_send_coods(coord);
 }
 
 void loop() {
   gps_get_coordinates(&coord);
-  if (! gprs_send_coods(coord)){
-    while(! gprs_init());
+  if (! gprs_send_coods(coord)) {
+    while (! gprs_init());
   }
 }

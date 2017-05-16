@@ -4,17 +4,13 @@ var leaveTime = ["07:30", "08:00", "08:30", "09:00",
   "17:00", "17:30", "18:30", "19:30", "20:30", "21:30", "22:00"
 ];
 
-var center = {
-  lat: -29.710173,
-  lng: -53.716594
-};
 var bufsmCurrentLocation = {
-  lat: -29.710173,
-  lng: -53.716594
+  lat: null,
+  lng: null
 };
 var userCurrentLocation = {
-  lat: -29.710173,
-  lng: -53.716594
+  lat: null,
+  lng: null
 };
 var i;
 var pointsRoute = [{
@@ -195,9 +191,8 @@ client.connect({
   onSuccess: function() {
     client.subscribe("bufsm");
 
-
+    //If the user is admin
     var admin = location.search.split('admin=')[1]
-
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -207,12 +202,13 @@ client.connect({
           lng: position.coords.longitude
         };
 
-
         user.setPosition(pos);
 
+        //Send the new position to the broker
         if (admin == 'true') {
-          message = new Paho.MQTT.Message('{"lat": ' + pos.lat + ', "lng": ' + pos.lng + ', "timeNow": "12/12/12 12:12:12"}');
+          message = new Paho.MQTT.Message('{"lat": ' + pos.lat + ', "lng": ' + pos.lng + '}');
           message.destinationName = "bufsm";
+          message.retained = true;
           client.send(message);
         }
 
@@ -224,7 +220,6 @@ client.connect({
       error = true;
       toastr.error('<strong>Habilite sua Localização (GPS)</strong>');
     }
-
 
   }
 });
@@ -245,9 +240,6 @@ client.onMessageArrived = function onMessageArrived(message) {
   //Get the position
   bufsmCurrentLocation.lat = data.lat;
   bufsmCurrentLocation.lng = data.lng;
-
-  //Update the bus departure based on the server datetime
-  updateDeparture(data.timeNow);
 
   if (firstTime) {
     map.setCenter(bufsmCurrentLocation);
@@ -307,6 +299,11 @@ $(document).ready(function() {
     }
 
   });
+
+  //Update the bus departure based on the server datetime
+  window.setInterval(function() {
+    updateDeparture(new Date().toLocaleString('pt-BR'));
+  }, 120*1000);
 
   //Show the tooltip for the menubar and hide it after 3s
   $('#hide div[data-toggle="tooltip"]').tooltip('toggle');
@@ -371,16 +368,15 @@ function initMap() {
 
   //Create the map
   map = new google.maps.Map(document.getElementById('map'), {
-    center: center,
     fullscreenControl: true,
     gestureHandling: 'greedy',
     scrollwheel: false,
     zoom: 17,
     streetViewControl: false
   });
+
   //Add the bus to the map
   busMarker = new google.maps.Marker({
-    position: bufsmCurrentLocation,
     icon: {
       url: "static/img/bufsm2.png", // url
       scaledSize: new google.maps.Size(25, 32), // scaled size
@@ -418,7 +414,6 @@ function initMap() {
 
   //Add the user to the map
   user = new google.maps.Marker({
-    position: userCurrentLocation,
     icon: {
       url: "static/img/user.png", // url
       scaledSize: new google.maps.Size(32, 32), // scaled size
@@ -427,7 +422,6 @@ function initMap() {
   });
 
 }
-
 
 function updateDeparture(timeStamp) {
 

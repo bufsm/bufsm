@@ -177,14 +177,12 @@ var isMobile = false;
 var map;
 var user;
 var busMarker;
-const urlAPI = "https://bufsm-dalmago.rhcloud.com/linha/1";
 var actualIndex = -1;
 var error = false;
-
 var firstTime = true;
 
 //Set the MQTT client
-client = new Paho.MQTT.Client('iot.eclipse.org', 443, "/ws", '');
+var client = new Paho.MQTT.Client('iot.eclipse.org', 443, "/ws", '');
 
 client.connect({
   useSSL: true,

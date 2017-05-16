@@ -300,10 +300,13 @@ $(document).ready(function() {
 
   });
 
+  //Update the bus departure
+  updateDeparture(new Date().toLocaleString('pt-BR'));
+
   //Update the bus departure based on the server datetime
   window.setInterval(function() {
     updateDeparture(new Date().toLocaleString('pt-BR'));
-  }, 120*1000);
+  }, 120 * 1000);
 
   //Show the tooltip for the menubar and hide it after 3s
   $('#hide div[data-toggle="tooltip"]').tooltip('toggle');

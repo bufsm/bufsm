@@ -1,6 +1,6 @@
 {
-    "name": "BUFSM",
-    "short_name": "BUFSM",
+    "name": "BUFSM Admin",
+    "short_name": "BUFSM Admin",
     "icons": [{
             "src": "static/img/bufsm3.png",
             "sizes": "800x800",

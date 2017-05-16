@@ -1,4 +1,0 @@
-Flask==0.10.1
-flask-cli==0.4.0
-Pysqlite==2.8.3
-

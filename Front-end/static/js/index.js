@@ -187,7 +187,7 @@ var client = new Paho.MQTT.Client('iot.eclipse.org', 443, "/ws", '');
 client.connect({
   useSSL: true,
   onSuccess: function() {
-    client.subscribe("bufsm");
+    client.subscribe("b123");
 
     //If the user is admin
     var admin = location.search.split('admin=')[1]
@@ -204,10 +204,11 @@ client.connect({
 
         //Send the new position to the broker
         if (admin == 'true') {
-          message = new Paho.MQTT.Message('{"lat": ' + pos.lat + ', "lng": ' + pos.lng + '}');
-          message.destinationName = "bufsm";
+          message = new Paho.MQTT.Message(String(pos.lat).slice(4, 10) + ',' + String(pos.lng).slice(4, 10));
+          message.destinationName = "b123";
           message.retained = true;
           client.send(message);
+
         }
 
       }, function() {
@@ -233,11 +234,11 @@ client.onConnectionLost = function onConnectionLost(responseObject) {
 client.onMessageArrived = function onMessageArrived(message) {
 
   //Parse JSON
-  data = JSON.parse(message.payloadString)
+  data = message.payloadString.split(',')
 
   //Get the position
-  bufsmCurrentLocation.lat = data.lat;
-  bufsmCurrentLocation.lng = data.lng;
+  bufsmCurrentLocation.lat = -29 - parseFloat('0.' + data[0]);
+  bufsmCurrentLocation.lng = -53 - parseFloat('0.' + data[1]);
 
   if (firstTime) {
     map.setCenter(bufsmCurrentLocation);

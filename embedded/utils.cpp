@@ -32,7 +32,7 @@ const char *AT_ANS[] = {
   "OK\r\n",
   "OK\r\n",
   "OK\r\n",
-  "> ",
+  "OK\r\n",
   "OK\r\n",
   "OK\r\n",
   "OK\r\n",
@@ -115,11 +115,11 @@ uint8_t gprs_init() {
   waitFor(AT_ANS[ACTIVATE_PDP_CONTEXT], "ERROR", 15000);
   uart_buffer = "";
 
-  //#ifdef DEBUG
-  //Serial2.print(AT_COMMANDS[GET_IP]);
+#ifdef DEBUG
+  Serial2.print(AT_COMMANDS[GET_IP]);
   Serial.print(AT_COMMANDS[GET_IP]);
   waitFor(AT_ANS[GET_IP], 0, 7000);
-  //#endif
+#endif
   uart_buffer = "";
 
   uint8_t count = 0;
@@ -135,7 +135,16 @@ uint8_t gprs_init() {
   } while (waitFor(AT_ANS[CONN_TCP], "ERROR", 20000) != 1);
 
   ledOff(BLUE_LED);
-  return 1;
+
+
+  // MQTT CONNECT
+  Serial.print(AT_COMMANDS[SEND_DATA]);
+  Serial.print(sizeof(MQTT_CONNECT));
+  Serial.print(",\"");
+  Serial.print(MQTT_CONNECT);
+  Serial.print("\"\r\n");
+  
+  return waitFor(AT_ANS[SEND_DATA], 0, 5000)==1? 1:0;
 }
 
 
@@ -146,47 +155,31 @@ void gps_init() {
   uart_buffer = "";
 }
 
-
 uint8_t gprs_send_coods(coords_t value) {
-  uart_buffer = "";
 
-  String b = GET + String(value.lat, 8) + "/" + String(value.lng, 8) + GET2;
+  uint16_t lat = abs((value.lat + 29) * GPS_PRECISION);
+  uint16_t lng = abs((value.lng + 53) * GPS_PRECISION);
 
-  Serial.print(AT_COMMANDS[SEND_DATA]);
-  Serial.print(b.length());
-  Serial.print("\r\n");
+  String data = lat + "," + lng;
 
-  waitFor(AT_ANS[SEND_DATA], 0, 5000);
-  uart_buffer = "";
+  String publish = (char)MQTT_PUBLISH_FIRST_BYTE + (char)(data.length() + strlen(MQTT_TOPIC)) + (char)0 + (char)(strlen(MQTT_TOPIC)) + MQTT_TOPIC + data;
 
 #ifdef DEBUG
-  Serial2.print(b);
+  Serial2.print(publish);
 #endif
-  Serial.print(b);
 
-  uint8_t count = 0;
-  while (waitFor("200 OK", "ERROR", 17000) != 1) {
-    ledOff(GREEN_LED);
+  Serial.print(AT_COMMANDS[SEND_DATA]);
+  Serial.print(publish.length());
+  Serial.print(",\"" + publish + "\"\r\n");
 
-    uart_buffer = "";
-    Serial.print(AT_COMMANDS[CONN_TCP]);
-    if (waitFor(AT_ANS[CONN_TCP], "ERROR", 20000) == 1) {
-      break;
-    }
-
-    if (count++ >= 3) return 0;
+  switch (waitFor(AT_ANS[SEND_DATA], 0, 5000)) {
+      uart_buffer = "";
+    case 1:
+      ledOn(GREEN_LED);
+      return 1;
+    default:
+      return 0;
   }
-
-  ledOn(GREEN_LED);
-
-  uart_buffer = "";
-
-  // Serial.print(AT_COMMANDS[CLOSE_TCP]);
-  // waitFor("OK\r\n", 0, 10000);
-
-  // uart_buffer = "";
-
-  return 1;
 }
 
 

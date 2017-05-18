@@ -15,11 +15,13 @@
 #define APN "zap.vivo.com.br"
 #endif
 
-#define URL "bufsm-dalmago.rhcloud.com"
+#define URL "iot.eclipse.org"
 
-#define WRITE_TOKEN "qq7EKjzsgwtE3mAhEWuY"
-#define GET "GET /linha/1/"WRITE_TOKEN"/"
-#define GET2 " HTTP/1.1\r\nHost: bufsm-dalmago.rhcloud.com\r\n\r\n"
+#define GPS_PRECISION (1E5)
+
+const char MQTT_CONNECT[] = {0x10, 0x13, 0x00, 0x06, 0x4d, 0x51, 0x49, 0x73, 0x64, 0x70, 0x03, 0x02, 0x00, 0x3c, 0x00, 5, 'B', 'U', 'F', 'S', 'M'}; // Protocol version: 3, clientID = BUFSM
+#define MQTT_PUBLISH_FIRST_BYTE 0x31 // QOS 0, Retain
+#define MQTT_TOPIC "b123"
 
 #define MODULE_RESET 6
 #define MODULE_PWR 7

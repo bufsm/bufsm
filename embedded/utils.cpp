@@ -143,8 +143,8 @@ uint8_t gprs_init() {
   Serial.print(",\"");
   Serial.print(MQTT_CONNECT);
   Serial.print("\"\r\n");
-  
-  return waitFor(AT_ANS[SEND_DATA], 0, 5000)==1? 1:0;
+
+  return waitFor(AT_ANS[SEND_DATA], 0, 5000) == 1 ? 1 : 0;
 }
 
 
@@ -178,6 +178,7 @@ uint8_t gprs_send_coods(coords_t value) {
       ledOn(GREEN_LED);
       return 1;
     default:
+      ledOff(GREEN_LED);
       return 0;
   }
 }

@@ -11,7 +11,7 @@ const char *AT_COMMANDS[] = {
   "AT+CGDCONT=1, \"IP\", \""APN"\"\r\n",
   "AT+CGACT=1,1\r\n",
   "AT+CIFSR\r\n",
-  "AT+CIPSTART=\"TCP\",\""URL"\",80\r\n",
+  "AT+CIPSTART=\"TCP\",\""URL"\",1883\r\n",
   "AT+CIPSEND=",
   "AT+CIPSHUT\r\n",
   "AT+GPS=1\r\n",
@@ -55,22 +55,25 @@ void wait_module_init() {
 
   // wait the module initialization proccess
 #ifdef TELIT_SIM
-  while (waitFor("CREG: 5\r\n", 0, 15000) != 1) {
+  while (waitFor("CREG: 5\r\n", 0, 20000) != 1) {
 #else
-  while (waitFor("CREG: 1\r\n", 0, 15000) != 1) {
+  while (waitFor("CREG: 1\r\n", 0, 20000) != 1) {
 #endif
     gprs_powerCycle();
     uart_buffer = "";
-    Serial.flush();
+    SerialAT.flush();
   }
-
   uart_buffer = "";
 
-  Serial.print(AT_COMMANDS[DIS_ECHO]);
+#ifdef DEBUG
+  SerialDebug.println("Initialized");
+#endif
+
+  SerialAT.print(AT_COMMANDS[DIS_ECHO]);
   waitFor(AT_ANS[DIS_ECHO], 0, 2000);
   uart_buffer = "";
 
-  Serial.print(AT_COMMANDS[SET_BAUD_RATE]);
+  SerialAT.print(AT_COMMANDS[SET_BAUD_RATE]);
   waitFor(AT_ANS[SET_BAUD_RATE], 0, 2000);
 
   uart_buffer = "";
@@ -81,103 +84,122 @@ uint8_t gprs_init() {
   do {
     ledToggle(BLUE_LED);
     uart_buffer = "";
-    Serial.print(AT_COMMANDS[NETWORK_REGIST]);
+    SerialAT.print(AT_COMMANDS[NETWORK_REGIST]);
   } while (waitFor(AT_ANS[NETWORK_REGIST], 0, 5000) != 1);
   uart_buffer = "";
   ledOn(BLUE_LED);
 
-  //#ifdef DEBUG
-  Serial.print(AT_COMMANDS[EN_SHOW_OPERATOR]);
+#ifdef DEBUG
+  SerialAT.print(AT_COMMANDS[EN_SHOW_OPERATOR]);
   waitFor(AT_ANS[EN_SHOW_OPERATOR], 0, 10000);
   uart_buffer = "";
 
-  Serial.print(AT_COMMANDS[CHECK_OPERATOR]);
+  SerialAT.print(AT_COMMANDS[CHECK_OPERATOR]);
   waitFor(AT_ANS[CHECK_OPERATOR], 0, 7000);
   uart_buffer = "";
 
-  //Serial2.print(AT_COMMANDS[ATTACH]);
-  //#endif
-  Serial.print(AT_COMMANDS[ATTACH]);
+  SerialDebug.print(AT_COMMANDS[ATTACH]);
+#endif
+  SerialAT.print(AT_COMMANDS[ATTACH]);
   waitFor(AT_ANS[ATTACH], 0, 20000);
   uart_buffer = "";
 
 #ifdef DEBUG
-  Serial2.print(AT_COMMANDS[SET_PDP_CONTEXT]);
+  SerialDebug.print(AT_COMMANDS[SET_PDP_CONTEXT]);
 #endif
-  Serial.print(AT_COMMANDS[SET_PDP_CONTEXT]);
+  SerialAT.print(AT_COMMANDS[SET_PDP_CONTEXT]);
   waitFor(AT_ANS[SET_PDP_CONTEXT], 0, 3000);
-  uart_buffer = "";
 
+  do {
 #ifdef DEBUG
-  Serial2.print(AT_COMMANDS[ACTIVATE_PDP_CONTEXT]);
+    SerialDebug.print(AT_COMMANDS[ACTIVATE_PDP_CONTEXT]);
 #endif
-  Serial.print(AT_COMMANDS[ACTIVATE_PDP_CONTEXT]);
-  waitFor(AT_ANS[ACTIVATE_PDP_CONTEXT], "ERROR", 15000);
+    uart_buffer = "";
+    SerialAT.print(AT_COMMANDS[ACTIVATE_PDP_CONTEXT]);
+  } while (waitFor(AT_ANS[ACTIVATE_PDP_CONTEXT], "ERROR", 15000) != 1);
   uart_buffer = "";
 
 #ifdef DEBUG
-  Serial2.print(AT_COMMANDS[GET_IP]);
-  Serial.print(AT_COMMANDS[GET_IP]);
+  SerialDebug.print(AT_COMMANDS[GET_IP]);
+  SerialAT.print(AT_COMMANDS[GET_IP]);
   waitFor(AT_ANS[GET_IP], 0, 7000);
 #endif
   uart_buffer = "";
 
   uint8_t count = 0;
   do {
-    if (count++ >= 5) {
+    if (count++ >= 3) {
       return 0;
     }
     uart_buffer = "";
 #ifdef DEBUG
-    Serial2.print(AT_COMMANDS[CONN_TCP]);
+    SerialDebug.print(AT_COMMANDS[CONN_TCP]);
 #endif
-    Serial.print(AT_COMMANDS[CONN_TCP]);
+    SerialAT.print(AT_COMMANDS[CONN_TCP]);
   } while (waitFor(AT_ANS[CONN_TCP], "ERROR", 20000) != 1);
 
   ledOff(BLUE_LED);
 
 
   // MQTT CONNECT
-  Serial.print(AT_COMMANDS[SEND_DATA]);
-  Serial.print(sizeof(MQTT_CONNECT));
-  Serial.print(",\"");
-  Serial.print(MQTT_CONNECT);
-  Serial.print("\"\r\n");
+#ifdef DEBUG
+  SerialDebug.println("MQTT CONNECT");
+#endif
+  SerialAT.print(AT_COMMANDS[SEND_DATA]);
+  SerialAT.print(sizeof(MQTT_CONNECT));
+  SerialAT.print("\r\n");
+  uart_buffer = "";
+  waitFor("> ", "", 2000);
 
-  return waitFor(AT_ANS[SEND_DATA], 0, 5000) == 1 ? 1 : 0;
+  SerialAT.write(MQTT_CONNECT, sizeof(MQTT_CONNECT));
+
+  uart_buffer = "";
+  return waitFor("CIPRCV", 0, 3000);
 }
 
 
 
 void gps_init() {
-  Serial.print(AT_COMMANDS[GPS_ON]);
+  SerialAT.print(AT_COMMANDS[GPS_ON]);
   waitFor(AT_ANS[GPS_ON], 0, 10000);
   uart_buffer = "";
 }
 
 uint8_t gprs_send_coods(coords_t value) {
+  uint32_t lat = abs((value.lat + 29) * GPS_PRECISION);
+  uint32_t lng = abs((value.lng + 53) * GPS_PRECISION);
 
-  uint16_t lat = abs((value.lat + 29) * GPS_PRECISION);
-  uint16_t lng = abs((value.lng + 53) * GPS_PRECISION);
+  String data = lat + String(",") + lng;
 
-  String data = lat + "," + lng;
+  byte publish[4];
+  publish[0] = MQTT_PUBLISH_FIRST_BYTE;
+  publish[1] = data.length() + strlen(MQTT_TOPIC) + 2;
+  publish[2] = 0;
+  publish[3] = strlen(MQTT_TOPIC);
 
-  String publish = (char)MQTT_PUBLISH_FIRST_BYTE + (char)(data.length() + strlen(MQTT_TOPIC)) + (char)0 + (char)(strlen(MQTT_TOPIC)) + MQTT_TOPIC + data;
 
 #ifdef DEBUG
-  Serial2.print(publish);
+  SerialDebug.println("Sending data");
 #endif
+  SerialAT.print(AT_COMMANDS[SEND_DATA]);
+  SerialAT.print(4 + data.length() + strlen(MQTT_TOPIC));
+  SerialAT.print("\r\n");
 
-  Serial.print(AT_COMMANDS[SEND_DATA]);
-  Serial.print(publish.length());
-  Serial.print(",\"" + publish + "\"\r\n");
+  uart_buffer = "";
+  waitFor("> ", "", 2000);
 
-  switch (waitFor(AT_ANS[SEND_DATA], 0, 5000)) {
-      uart_buffer = "";
+  SerialAT.write(publish, sizeof(publish));
+  SerialAT.print(MQTT_TOPIC);
+  SerialAT.print(data);
+
+  uart_buffer = "";
+  switch (waitFor(AT_ANS[SEND_DATA], 0, 3000)) {
     case 1:
+      uart_buffer = "";
       ledOn(GREEN_LED);
       return 1;
     default:
+      uart_buffer = "";
       ledOff(GREEN_LED);
       return 0;
   }
@@ -188,9 +210,9 @@ void gps_get_coordinates(coords_t *c) {
 
   uart_buffer = "";
 #ifdef DEBUG
-  Serial2.print(AT_COMMANDS[GPS_AT_ON]);
+  SerialDebug.print(AT_COMMANDS[GPS_AT_ON]);
 #endif
-  Serial.print(AT_COMMANDS[GPS_AT_ON]);
+  SerialAT.print(AT_COMMANDS[GPS_AT_ON]);
 
   waitFor(AT_ANS[GPS_AT_ON], 0, 5000);
   uart_buffer = "";
@@ -209,19 +231,19 @@ void gps_get_coordinates(coords_t *c) {
         gps.f_get_position(&c->lat, &c->lng);
 
 #ifdef DEBUG
-        Serial2.print("#########>");
-        Serial2.print(uart_buffer);
-        Serial2.println("<#########");
-        Serial2.print("lat: "); Serial2.println(c->lat, 8);
-        Serial2.print("lng: "); Serial2.println(c->lng, 8);
-        Serial2.println("<#########");
+        SerialDebug.print("#########>");
+        SerialDebug.print(uart_buffer);
+        SerialDebug.println("<#########");
+        SerialDebug.print("lat: "); SerialDebug.println(c->lat, 8);
+        SerialDebug.print("lng: "); SerialDebug.println(c->lng, 8);
+        SerialDebug.println("<#########");
 #endif
 
         // Desabilita GPS NMEA pela UART
-        Serial.print(AT_COMMANDS[GPS_AT_OFF]);
+        SerialAT.print(AT_COMMANDS[GPS_AT_OFF]);
         waitFor(AT_ANS[GPS_AT_OFF], 0, 5000);
         uart_buffer = "";
-        Serial.flush();
+        SerialAT.flush();
 
         ledOff(RED_LED);
         return;
@@ -239,13 +261,13 @@ int waitFor(const char *ans, const char *error, unsigned int tempo) {
   unsigned long time_counter = millis();
 
   while (millis() - time_counter < tempo) {
-    uart_buffer += Serial.readString();
+    uart_buffer += SerialAT.readString();
 
     if (uart_buffer.indexOf(ans) != -1) {
 #ifdef DEBUG
-      Serial2.println("Encontrou:");
-      Serial2.println(uart_buffer);
-      Serial2.println("++++");
+      SerialDebug.println("Encontrou:");
+      SerialDebug.println(uart_buffer);
+      SerialDebug.println("++++");
 #endif
 
       return 1;
@@ -253,16 +275,16 @@ int waitFor(const char *ans, const char *error, unsigned int tempo) {
 
     else if (error != 0 && uart_buffer.indexOf(error) != -1) {
 #ifdef DEBUG
-      Serial2.print(uart_buffer);
+      SerialDebug.print(uart_buffer);
 #endif
       return -1;
     }
 
   }
 #ifdef DEBUG
-  Serial2.println("Timeout:");
-  Serial2.print(uart_buffer);
-  Serial2.println("++++");
+  SerialDebug.println("Timeout:");
+  SerialDebug.print(uart_buffer);
+  SerialDebug.println("++++");
 #endif
   return 0;
 }

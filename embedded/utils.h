@@ -19,7 +19,7 @@
 
 #define GPS_PRECISION (1E5)
 
-const char MQTT_CONNECT[] = {0x10, 0x13, 0x00, 0x06, 0x4d, 0x51, 0x49, 0x73, 0x64, 0x70, 0x03, 0x02, 0x00, 0x3c, 0x00, 5, 'B', 'U', 'F', 'S', 'M'}; // Protocol version: 3, clientID = BUFSM
+const byte MQTT_CONNECT[] = {0x10, 19, 0x00, 0x06, 0x4d, 0x51, 0x49, 0x73, 0x64, 0x70, 0x03, 0x02, 0x00, 0x3c, 0x00, 5, 'B', 'U', 'F', 'S', 'M'}; // Protocol version: 3, clientID = BUFSM
 #define MQTT_PUBLISH_FIRST_BYTE 0x31 // QOS 0, Retain
 #define MQTT_TOPIC "b123"
 
@@ -32,6 +32,11 @@ const char MQTT_CONNECT[] = {0x10, 0x13, 0x00, 0x06, 0x4d, 0x51, 0x49, 0x73, 0x6
 #define ledOn(led) digitalWrite(led, 1)
 #define ledOff(led) digitalWrite(led, 0)
 #define ledToggle(led) digitalWrite(led, 1^digitalRead(led))
+
+#define SerialAT Serial
+#ifdef DEBUG
+#define SerialDebug Serial
+#endif
 
 typedef struct {
   float lat;

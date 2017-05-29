@@ -17,11 +17,11 @@ void setup() {
   gprs_reset();
 
 #ifdef DEBUG
-  Serial2.begin(115200);
+  SerialDebug.begin(115200);
 #endif
-  Serial.begin(115200);
-  Serial.setTimeout(300);
-  Serial.flush();
+  SerialAT.begin(115200);
+  SerialAT.setTimeout(300);
+  SerialAT.flush();
 
   gprs_powerCycle();
 
@@ -30,13 +30,15 @@ void setup() {
   gps_init();
 
   gps_get_coordinates(&coord);
+  
   while (! gprs_init());
-  //gprs_send_coods(coord);
 }
 
 void loop() {
   gps_get_coordinates(&coord);
-  if (! gprs_send_coods(coord)) {
-    while (! gprs_init());
-  }
+
+  gprs_send_coods(coord);
+  //if (! gprs_send_coods(coord)) {
+  //while (! gprs_init());
+  //}
 }

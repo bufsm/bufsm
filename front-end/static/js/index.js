@@ -186,6 +186,7 @@ var client = new Paho.MQTT.Client('iot.eclipse.org', 443, "/ws", '');
 
 client.connect({
   useSSL: true,
+  keepAliveInterval: 15,
   onSuccess: function() {
     client.subscribe("b123");
 
@@ -226,25 +227,36 @@ client.connect({
 //When the connection is lost
 client.onConnectionLost = function onConnectionLost(responseObject) {
   if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:" + responseObject.errorMessage);
+    toastr.remove();
+    toastr.error('<strong>Verifique sua Conexão!</strong>');
+    firstTime = true;
   }
 };
 
 //When the message is received
 client.onMessageArrived = function onMessageArrived(message) {
 
-  //Parse JSON
-  data = message.payloadString.split(',')
+  if (message.payloadString == 'e') {
+    toastr.remove();
+    toastr.warning('<strong>Aguarde. Estamos localizando o bUFSM!</strong>');
+    firstTime = true;
+  } else {
 
-  //Get the position
-  bufsmCurrentLocation.lat = -29 - parseFloat('0.' + data[0]);
-  bufsmCurrentLocation.lng = -53 - parseFloat('0.' + data[1]);
+    //Parse JSON
+    data = message.payloadString.split(',')
 
-  if (firstTime) {
-    map.setCenter(bufsmCurrentLocation);
-    firstTime = false;
+    //Get the position
+    bufsmCurrentLocation.lat = -29 - parseFloat('0.' + data[0]);
+    bufsmCurrentLocation.lng = -53 - parseFloat('0.' + data[1]);
+
+    if (firstTime) {
+      map.setCenter(bufsmCurrentLocation);
+      firstTime = false;
+    }
+    busMarker.setPosition(bufsmCurrentLocation);
+
   }
-  busMarker.setPosition(bufsmCurrentLocation);
+
 };
 
 $(document).ready(function() {

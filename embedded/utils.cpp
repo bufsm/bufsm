@@ -154,7 +154,7 @@ uint8_t gprs_init() {
   SerialAT.write(MQTT_CONNECT, sizeof(MQTT_CONNECT));
 
   uart_buffer = "";
-  return waitFor("CIPRCV", 0, 3000);
+  return waitFor("CIPRCV", 0, 7500);
 }
 
 
@@ -193,12 +193,15 @@ uint8_t gprs_send_coods(coords_t *value) {
   SerialAT.print(data);
 
   uart_buffer = "";
-  switch (waitFor(AT_ANS[SEND_DATA], 0, 3000)) {
+  switch (waitFor(AT_ANS[SEND_DATA], 0, 4000)) {
     case 1:
       uart_buffer = "";
       ledOn(GREEN_LED);
       return 1;
     default:
+      uart_buffer = "";
+      SerialAT.print(AT_COMMANDS[CLOSE_TCP]);
+      waitFor(AT_ANS[CLOSE_TCP], 0, 2500);
       uart_buffer = "";
       ledOff(GREEN_LED);
       return 0;

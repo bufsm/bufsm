@@ -19,7 +19,17 @@
 
 #define GPS_PRECISION (1E5)
 
-const byte MQTT_CONNECT[] = {0x10, 32, 0, 6, 'M', 'Q', 'I', 's', 'd', 'p', 3, 0x06, 0, 10, 0, 5, 'B', 'U', 'F', 'S', 'M', 0, 4, 'b', '1', '2', '3', 0, 5, 'e', 'r', 'r', 'o', 'r'}; // Protocol version: 3, clientID = BUFSM
+const byte MQTT_CONNECT[] = {
+                              0x10,  // CONNECT
+                              36,     // Remaining Length
+                              0, 6, 'M', 'Q', 'I', 's', 'd', 'p', 3, // Protocol
+                              0x06,   // Clean Session + Will Flag
+                              0, 10,  // Keep Alive
+                              0, 5, 'B', 'U', 'F', 'S', 'M', // Client Id
+                              0, 8, 'b', '1', '2', '3', '/', 'l', 'w', 't', // Will Topic
+                              0, 5, 'e', 'r', 'r', 'o', 'r'  // Will Message
+                            };
+
 #define MQTT_PUBLISH_FIRST_BYTE 0x31 // QOS 0, Retain
 #define MQTT_TOPIC "b123"
 

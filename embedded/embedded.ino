@@ -37,8 +37,8 @@ void setup() {
 void loop() {
   gps_get_coordinates(&coord);
 
-  gprs_send_coods(&coord);
-  //if (! gprs_send_coods(coord)) {
-  //while (! gprs_init());
-  //}
+  //gprs_send_coods(&coord);
+  if (! gprs_send_coods(&coord)) {
+    while (! gprs_init());
+  }
 }

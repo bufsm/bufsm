@@ -5,7 +5,7 @@ const char *AT_COMMANDS[] = {
   "ATE0\r\n",
   "AT+IPR=115200\r\n",
   "AT+CREG?\r\n",
-  "AT+COPS=0,0\r\n",
+  "AT+COPS=3,0\r\n",
   "AT+COPS?\r\n",
   "AT+CGATT=1\r\n",
   "AT+CGDCONT=1, \"IP\", \""APN"\"\r\n",
@@ -165,9 +165,9 @@ void gps_init() {
   uart_buffer = "";
 }
 
-uint8_t gprs_send_coods(coords_t value) {
-  uint32_t lat = abs((value.lat + 29) * GPS_PRECISION);
-  uint32_t lng = abs((value.lng + 53) * GPS_PRECISION);
+uint8_t gprs_send_coods(coords_t *value) {
+  uint32_t lat = abs((value->lat + 29) * GPS_PRECISION);
+  uint32_t lng = abs((value->lng + 53) * GPS_PRECISION);
 
   String data = lat + String(",") + lng;
 

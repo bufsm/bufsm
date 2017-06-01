@@ -19,7 +19,7 @@
 
 #define GPS_PRECISION (1E5)
 
-const byte MQTT_CONNECT[] = {0x10, 19, 0x00, 0x06, 0x4d, 0x51, 0x49, 0x73, 0x64, 0x70, 0x03, 0x02, 0x00, 0x3c, 0x00, 5, 'B', 'U', 'F', 'S', 'M'}; // Protocol version: 3, clientID = BUFSM
+const byte MQTT_CONNECT[] = {0x10, 32, 0, 6, 'M', 'Q', 'I', 's', 'd', 'p', 3, 0x06, 0, 10, 0, 5, 'B', 'U', 'F', 'S', 'M', 0, 4, 'b', '1', '2', '3', 0, 5, 'e', 'r', 'r', 'o', 'r'}; // Protocol version: 3, clientID = BUFSM
 #define MQTT_PUBLISH_FIRST_BYTE 0x31 // QOS 0, Retain
 #define MQTT_TOPIC "b123"
 
@@ -47,7 +47,7 @@ void wait_module_init();
 uint8_t gprs_init();
 void gps_init();
 // void gprs_connect();
-uint8_t gprs_send_coods(coords_t);
+uint8_t gprs_send_coods(coords_t*);
 void gps_get_coordinates(coords_t*);
 void gprs_reset();
 void gprs_powerCycle();

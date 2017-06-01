@@ -110,12 +110,16 @@ uint8_t gprs_init() {
   SerialAT.print(AT_COMMANDS[SET_PDP_CONTEXT]);
   waitFor(AT_ANS[SET_PDP_CONTEXT], 0, 3000);
 
+  uint8_t count = 0;
   do {
+    if (count++ >= 5)
+      return 0;
+
 #ifdef DEBUG
     SerialDebug.print(AT_COMMANDS[ACTIVATE_PDP_CONTEXT]);
 #endif
-    uart_buffer = "";
     SerialAT.print(AT_COMMANDS[ACTIVATE_PDP_CONTEXT]);
+    uart_buffer = "";
   } while (waitFor(AT_ANS[ACTIVATE_PDP_CONTEXT], "ERROR", 15000) != 1);
   uart_buffer = "";
 
@@ -123,19 +127,19 @@ uint8_t gprs_init() {
   SerialDebug.print(AT_COMMANDS[GET_IP]);
   SerialAT.print(AT_COMMANDS[GET_IP]);
   waitFor(AT_ANS[GET_IP], 0, 7000);
-#endif
   uart_buffer = "";
+#endif
 
-  uint8_t count = 0;
+  count = 0;
   do {
-    if (count++ >= 3) {
+    if (count++ >= 3)
       return 0;
-    }
-    uart_buffer = "";
+
 #ifdef DEBUG
     SerialDebug.print(AT_COMMANDS[CONN_TCP]);
 #endif
     SerialAT.print(AT_COMMANDS[CONN_TCP]);
+    uart_buffer = "";
   } while (waitFor(AT_ANS[CONN_TCP], "ERROR", 20000) != 1);
 
   ledOff(BLUE_LED);
@@ -193,7 +197,7 @@ uint8_t gprs_send_coods(coords_t *value) {
   SerialAT.print(data);
 
   uart_buffer = "";
-  switch (waitFor(AT_ANS[SEND_DATA], 0, 4000)) {
+  switch (waitFor(AT_ANS[SEND_DATA], 0, 5500)) {
     case 1:
       uart_buffer = "";
       ledOn(GREEN_LED);

@@ -239,7 +239,7 @@ var connectionOptions = {
             }
           };
 
-          var shouldSend = (Math.abs(pos.lat) - Math.abs(prevPos.lat)) > 0.0001 || (Math.abs(pos.lon) - Math.abs(prevPos.lon)) > 0.0001;
+          var shouldSend = (Math.abs(pos.lat) - Math.abs(prevPos.lat)) > 0.001 || (Math.abs(pos.lon) - Math.abs(prevPos.lon)) > 0.001;
 
           //Update the prev position
           prevPos = pos;

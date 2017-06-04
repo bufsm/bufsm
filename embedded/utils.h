@@ -21,17 +21,17 @@
 
 const byte MQTT_CONNECT[] = {
                               0x10,  // CONNECT
-                              28,     // Remaining Length
+                              31,     // Remaining Length
                               0, 6, 'M', 'Q', 'I', 's', 'd', 'p', 3, // Protocol
                               0x26,   // Clean Session + Will Flag + Will Retain
                               0, 10,  // Keep Alive
                               0, 5, 'B', 'U', 'F', 'S', 'M', // Client Id
-                              0, 4, 'b', '1', '2', '3', // Will Topic
+                              0, 7, 'b', 'u', 'f', 's', 'm', '/', 'm', // Will Topic
                               0, 1, 'e' // Will Message
                             };
 
 #define MQTT_PUBLISH_FIRST_BYTE 0x31 // QOS 0, Retain
-#define MQTT_TOPIC "b123"
+#define MQTT_PUBLISH_TOPIC "bufsm/p"
 
 #define MODULE_RESET 6
 #define MODULE_PWR 7

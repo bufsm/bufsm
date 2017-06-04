@@ -173,27 +173,27 @@ uint8_t gprs_send_coods(coords_t *value) {
   uint32_t lat = abs((value->lat + 29) * GPS_PRECISION);
   uint32_t lng = abs((value->lng + 53) * GPS_PRECISION);
 
-  String data = lat + String(",") + lng;
+  String data = String(lat) + String(lng);
 
   byte publish[4];
   publish[0] = MQTT_PUBLISH_FIRST_BYTE;
-  publish[1] = data.length() + strlen(MQTT_TOPIC) + 2;
+  publish[1] = data.length() + strlen(MQTT_PUBLISH_TOPIC) + 2;
   publish[2] = 0;
-  publish[3] = strlen(MQTT_TOPIC);
+  publish[3] = strlen(MQTT_PUBLISH_TOPIC);
 
 
 #ifdef DEBUG
   SerialDebug.println("Sending data");
 #endif
   SerialAT.print(AT_COMMANDS[SEND_DATA]);
-  SerialAT.print(4 + data.length() + strlen(MQTT_TOPIC));
+  SerialAT.print(4 + data.length() + strlen(MQTT_PUBLISH_TOPIC));
   SerialAT.print("\r\n");
 
   uart_buffer = "";
   waitFor("> ", "", 2000);
 
   SerialAT.write(publish, sizeof(publish));
-  SerialAT.print(MQTT_TOPIC);
+  SerialAT.print(MQTT_PUBLISH_TOPIC);
   SerialAT.print(data);
 
   uart_buffer = "";

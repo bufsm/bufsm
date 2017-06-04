@@ -244,7 +244,7 @@ var connectionOptions = {
           //Update the prev position
           prevPos = pos;
 
-          if (ip && isConnected && shouldSend) {
+          if (isConnected && shouldSend) {
             var message = new Paho.MQTT.Message(JSON.stringify(info));
             message.destinationName = "bufsm/o";
             message.retained = false;

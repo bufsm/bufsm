@@ -224,8 +224,8 @@ var connectionOptions = {
 
           //Get the user position
           var pos = {
-            lat: Math.round(position.coords.latitude * 1000000) / 1000000,
-            lng: Math.round(position.coords.longitude * 1000000) / 1000000
+            lat: Math.round(position.coords.latitude * 100000) / 100000,
+            lng: Math.round(position.coords.longitude * 100000) / 100000
           };
 
           //Set the user icon position on the map
@@ -239,7 +239,7 @@ var connectionOptions = {
             }
           };
 
-          var shouldSend = true;//(Math.abs(pos.lat) - Math.abs(prevPos.lat)) > 0.0001 || (Math.abs(pos.lon) - Math.abs(prevPos.lon)) > 0.0001;
+          var shouldSend = (Math.abs(pos.lat) - Math.abs(prevPos.lat)) > 0.0001 || (Math.abs(pos.lon) - Math.abs(prevPos.lon)) > 0.0001;
 
           //Update the prev position
           prevPos = pos;
@@ -285,8 +285,8 @@ mqttClient.onMessageArrived = function onMessageArrived(message) {
   } else if (message.destinationName === 'bufsm/p') {
 
     //Parse JSON
-    var lat = message.payloadString.slice(0, 6);
-    var lon = message.payloadString.slice(6, 12);
+    var lat = message.payloadString.slice(0, 5);
+    var lon = message.payloadString.slice(5, 11);
 
     //Get the position
     bufsmCurrentLocation.lat = -29 - parseFloat('0.' + lat);

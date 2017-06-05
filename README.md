@@ -14,8 +14,10 @@ Pretende-se, num futuro não muito distante ~~?~~, implementar a comunicação v
 
 ### Estrutura:
 
-#### Mobile:
-Update:
-Em vez do desenvolvimento de um app nativo, indica-se o uso de uma grande tendência para os próximos anos, que são os [Progressive Web Apps](https://developers.google.com/web/progressive-web-apps/), o que é um leque de características que fazem com que uma página Web tenha uma experiência mobile muito similar ao de um aplicativo nativo. Exemplos são encontrados [aqui](https://pwa.rocks).
+#### Embedded:
 
+O código embarcado no Arduino Nano comanda o módulo A7, lendo as coordenadas geográficas do ônibus e enviando-as, via protocolo MQTT, para um *broker*. Essas mensagens com as coordenadas são então replicadas para cada cliente que está com o *app* aberto.
 
+#### Front-end:
+
+Desenvolvido como uma página Web, segue os conceitos de um [Progressive Web App](https://developers.google.com/web/progressive-web-apps/). Este se caracteriza por ser uma página acessível de qualquer navegador em qualquer plataforma, ainda permitindo que a mesma seja "Instalada" na tela inicial de um aparelho *mobile*, agindo de forma semelhante a um aplicativo nativo.

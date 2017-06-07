@@ -1,4 +1,4 @@
-# bUFSM [![Build Status](https://travis-ci.org/dalmago/bufsm.svg?branch=master)](https://travis-ci.org/dalmago/bufsm)
+# bUFSM [![Build Status](https://travis-ci.org/bufsm/bufsm.svg?branch=master)](https://travis-ci.org/bufsm/bufsm)
 ### O circular da UFSM
 
 A aplicação para o ~~ônibus intracampus da UFSM~~ bUFSM tem por objetivo melhorar a rotina das pessoas que o utilizam, informando em tempo real ~~?~~ a localização do mesmo.
@@ -8,7 +8,7 @@ A aplicação para o ~~ônibus intracampus da UFSM~~ bUFSM tem por objetivo melh
 ### Hardware:
 
 O hardware em si é dividido em duas partes principais: localização e comunicação. Para satisfazer ambas, utilizou-se o módulo GPS + GSM A7, da Ai-Thinker. Um Arduino Nano também  utilizado, para controlar o módulo via comandos AT.
-O esquemático pode ser encontrado [aqui](https://github.com/dalmago/bufsm/tree/master/embedded/schematic).
+O esquemático pode ser encontrado [aqui](https://github.com/bufsm/bufsm/tree/master/embedded/schematic).
 
 Pretende-se, num futuro não muito distante ~~?~~, implementar a comunicação via LoRa, uma vez que no há um custo mensal para a transmisso de dados, como o GSM.
 

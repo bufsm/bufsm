@@ -209,7 +209,8 @@ if (isMobile) {
 //Define the connection options
 var connectionOptions = {
   useSSL: true,
-  keepAliveInterval: 20,
+  timeout: 5,
+  keepAliveInterval: 5,
   onSuccess: function() {
     mqttClient.subscribe("bufsm/p");
     mqttClient.subscribe("bufsm/m");
@@ -262,13 +263,43 @@ var connectionOptions = {
 
 //When the connection is lost
 mqttClient.onConnectionLost = function onConnectionLost(responseObject) {
+
   if (responseObject.errorCode !== 0) {
     toastr.remove();
     toastr.error('<strong>Verifique sua Conexão!</strong>');
 
     isConnected = false;
 
-    mqttClient.connect(connectionOptions);
+    var i = 5;
+
+    //Set the time interval every 10s
+    var v = setInterval(function() {
+
+      toastr.remove();
+      toastr.error('<strong>Reconectando em ' + (i) + '</strong>');
+
+      //If connected, clear the interval
+      if (isConnected) {
+        clearInterval(v);
+        toastr.remove();
+        toastr.success('<strong>Reconectado!</strong>');
+      } else {
+
+        if (i == 0) {
+
+          i = 5;
+
+          //Reconnecting
+          delete connectionOptions['mqttVersionExplicit'];
+          mqttClient.connect(connectionOptions);
+
+        }
+
+      }
+
+      i--;
+
+    }, 2500);
 
   }
 };

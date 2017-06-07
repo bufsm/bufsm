@@ -14,7 +14,7 @@ after_success:
     - git config --local user.email ${MY_EMAIL}
     - git add .
     - git commit -m "Automatically deploying to gh-pages"
-    - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/dalmago/bufsm.git" master:gh-pages
+    - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/bufsm/bufsm.github.io.git"
 
 branches:
   only:
@@ -22,4 +22,4 @@ branches:
 
 notifications:
   slack:
-    secure: SIZBlgmDVL8KbaeR3YN4AVI8wI7QFLoFsaEAH2I1leNsc8DvnS2F5LYnW+wpVSbcWyLX3uCvTFGAaygP/QE7t63+Q1EjQ5hrovIWiIKR0v1xIRPyYhWhmX1ZbQNCOdXAFshw6QCR/vmgbS5Y07JTWSIx6BWpQbuv8RMgf8jfKiX7Bn8jL42aE2GWcQA3B9LWVfujF74ruUCN+Ppmy/B3ES1M1yOoD1txHXF+qDk6WxylXyrJeAAuJrOud4vaYkWEbzA2l9ITQ9jIcu4APLBDE2YCdLFwqRx3rsL6Tx7WszeC4lCIKlJ/PdEc736xuhm89HwtI8anyN2z42fIl3mGrAXhYkEYeWQp9Y3772mjjeTgF4a41GkLzKWsYIiWdJR/ivKHNhk+YzXGgnf5NOlril1zdDK9KieuRuMkY7ulveXjLKcEX/WCzh3AugdvjZpguGLgt8VoaeQE/i17ELlT+Yjw9RUtBmyWEYSb205ZxEorMaVLEeHfHWlzcHcT90iIwY2kragBQGic6Yf1DlSK/mHP7fNNKgyBZfqHK1oEHh32y7KrSux7FBBPZFcBO6P06X/fdWuwBVwbhqh/uFS/mZtiOnTu3x85Q7uSIk/ZGoyCUT8LXP0x7cWzL1WB9CvyM64QzUDlvhzrO919pB8dWI9drS8XXvIE40yIQLZ0qKw=
+    secure: ML6ICg3cK9lWfPXdOw0XVYXp9UMLeZLtOTZViCM4X65iwXhrc7f/l9jgaNukRL2frl8QYSo/8XLW7AG6TTSIuKVO0j3TdwTHN51aOsFQaGGt0T15VzCx9TlLmHGtJ7VBQmmcJ1cvocY3kk0RJzv10zxaHwM4+yrkwerPXsCwnlEqh+bExs0PINEDm/eJ5WrHoeVQ4XXhbCDgNKnYrIAXHr12EWiNrWQf56kk1XMIBIZ0lv9BQU/Snk9Y9oZ3dnv2mxdAvROm9NjauLKwYr+koxqFyqY2wfwm05tIte2dzuoR11rkpx4+EtCWYI6u2AW/dLVs0xslchQ05R601SRBEwJPJtmv1ryfziJnxKrHFcSZXDumIPVG2Dbnt4TuAkJlWjFbasdJ3p2RnAqUUJt1a7ICopvfMLZwna5AyAxQlyOgVXPbwM9MZRyekfH0WMvKRZL2MM5IGU+QsiT34bwmXL0mNUeIWaDm4oZJYWsckdabbpUko+xyC/mtBabXfKxOLqipq3GB5tqgU5w3Aa4kf+q8wWcOWf/ztWBcaQvqgBVXOkPhMcaVNMy7nTOIyTv+ty9C0lmENUi9kCZnQiVuMhqKLCfFNX5iRFzBF6+Q1AfYRMciHgOYTgN3qEK+LXAZOxEoKRoJxsL9DVDGmIQd3kKAvpQsaUcWvV+wW453feI=

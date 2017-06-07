@@ -14,7 +14,7 @@ after_success:
     - git config --local user.email ${MY_EMAIL}
     - git add .
     - git commit -m "Automatically deploying to gh-pages"
-    - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/bufsm/bufsm.github.io.git"
+    - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/bufsm/bufsm.github.io.git" master:master
 
 branches:
   only:

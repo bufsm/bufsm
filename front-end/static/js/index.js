@@ -209,8 +209,8 @@ if (isMobile) {
 //Define the connection options
 var connectionOptions = {
   useSSL: true,
-  timeout: 5,
-  keepAliveInterval: 5,
+  timeout: 20,
+  keepAliveInterval: 20,
   onSuccess: function() {
     mqttClient.subscribe("bufsm/p");
     mqttClient.subscribe("bufsm/m");

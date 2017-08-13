@@ -4,16 +4,13 @@
 
 #include <Arduino.h>
 #include <TinyGPS.h>
+#include <stdint.h>
 
-
-#define TELIT_SIM
 // #define DEBUG
 
-#ifdef TELIT_SIM
-#define APN "internetm2m.air.com"
-#else
-#define APN "zap.vivo.com.br"
-#endif
+//#define APN "virtueyes.vivo.com.br"
+ #define APN "internetm2m.air.com"
+// #define APN "zap.vivo.com.br"
 
 #define URL "iot.eclipse.org"
 
@@ -63,26 +60,26 @@ void gprs_reset();
 void gprs_powerCycle();
 int waitFor(const char *, const char *, unsigned int);
 
-
-enum at_command {
-  AT = 0,
-  DIS_ECHO,
-  SET_BAUD_RATE,
-  NETWORK_REGIST,
-  EN_SHOW_OPERATOR,
-  CHECK_OPERATOR,
-  ATTACH,
-  SET_PDP_CONTEXT,
-  ACTIVATE_PDP_CONTEXT,
-  GET_IP,
-  CONN_TCP,
-  SEND_DATA,
-  CLOSE_TCP,
-  GPS_ON,
-  GPS_OFF,
-  GPS_AT_ON,
-  GPS_AT_OFF,
-  GPS_ANS
-};
+//
+//enum at_command {
+//  AT = 0,
+//  DIS_ECHO,
+//  SET_BAUD_RATE,
+//  NETWORK_REGIST = 3,
+//  EN_SHOW_OPERATOR,
+//  CHECK_OPERATOR,
+//  ATTACH,
+//  SET_PDP_CONTEXT,
+//  ACTIVATE_PDP_CONTEXT,
+//  GET_IP,
+//  CONN_TCP,
+//  SEND_DATA,
+//  CLOSE_TCP,
+//  GPS_ON,
+//  GPS_OFF,
+//  GPS_AT_ON,
+//  GPS_AT_OFF,
+//  GPS_ANS
+//};
 
 #endif

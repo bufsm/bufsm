@@ -5,36 +5,16 @@
 #include <Arduino.h>
 #include <TinyGPS.h>
 #include <stdint.h>
+#include<string.h>
 
-// #define DEBUG
+//#define DEBUG
+//#define DEBUG_GPS
 
-//#define APN "virtueyes.vivo.com.br"
- #define APN "internetm2m.air.com"
-// #define APN "zap.vivo.com.br"
 
-#define URL "iot.eclipse.org"
-
-#define GPS_PRECISION (1E5)
-
-const byte MQTT_CONNECT[] = {
-                              0x10,  // CONNECT
-                              31,     // Remaining Length
-                              0, 6, 'M', 'Q', 'I', 's', 'd', 'p', 3, // Protocol
-                              0x26,   // Clean Session + Will Flag + Will Retain
-                              0, 10,  // Keep Alive
-                              0, 5, 'B', 'U', 'F', 'S', 'M', // Client Id
-                              0, 7, 'b', 'u', 'f', 's', 'm', '/', 'm', // Will Topic
-                              0, 1, 'e' // Will Message
-                            };
-
-#define MQTT_PUBLISH_FIRST_BYTE 0x31 // QOS 0, Retain
-#define MQTT_PUBLISH_TOPIC "bufsm/p"
-
-#define MODULE_RESET 6
-#define MODULE_PWR 7
-#define BLUE_LED 5
-#define GREEN_LED 4
-#define RED_LED 3
+#define GPS_RESET 7
+#define BLUE_LED 10
+#define GREEN_LED 9
+#define RED_LED 8
 
 #define ledOn(led) digitalWrite(led, 1)
 #define ledOff(led) digitalWrite(led, 0)
@@ -45,41 +25,19 @@ const byte MQTT_CONNECT[] = {
 #define SerialDebug Serial
 #endif
 
+#define MAX_NULL_RECEIVED 5
+#define MAX_INCORRECT_GPS_PARAMETERS 5*7
+
 typedef struct {
   float lat;
   float lng;
 } coords_t;
 
-void wait_module_init();
-uint8_t gprs_init();
-void gps_init();
-// void gprs_connect();
-uint8_t gprs_send_coods(coords_t*);
-void gps_get_coordinates(coords_t*);
-void gprs_reset();
-void gprs_powerCycle();
-int waitFor(const char *, const char *, unsigned int);
 
-//
-//enum at_command {
-//  AT = 0,
-//  DIS_ECHO,
-//  SET_BAUD_RATE,
-//  NETWORK_REGIST = 3,
-//  EN_SHOW_OPERATOR,
-//  CHECK_OPERATOR,
-//  ATTACH,
-//  SET_PDP_CONTEXT,
-//  ACTIVATE_PDP_CONTEXT,
-//  GET_IP,
-//  CONN_TCP,
-//  SEND_DATA,
-//  CLOSE_TCP,
-//  GPS_ON,
-//  GPS_OFF,
-//  GPS_AT_ON,
-//  GPS_AT_OFF,
-//  GPS_ANS
-//};
+void gps_get_coordinates_ublox(coords_t *c);
+
+void float_to_string(double number, char *res, int afterpoint);
+
+int waitFor(const char *, const char *, unsigned int);
 
 #endif

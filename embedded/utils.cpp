@@ -3,234 +3,116 @@
 String uart_buffer;
 TinyGPS gps;
 
-// unsigned char bufsm_init = 0;
-// unsigned char bufsm_gps_valid = 0;
-// unsigned char bufsm_connected = 0;
-// unsigned char bufsm_data_sent = 0;
+#define MAX_NULL_RECEIVED 5
+#define MAX_INCORRECT_GPS_PARAMETERS 5*7
 
-void wait_module_init() {
-  ledOn(RED_LED);
+void gps_get_coordinates_ublox(coords_t *c) {
+
+  SerialAT.flush();
   uart_buffer = "";
 
-  // wait the module initialization proccess
-  // CREG: 1 - local network
-  // CREG: 5 - roaming
-  while (! waitFor("CREG: 1\r\n", "CREG: 5\r\n", 25000)) {
+  while (1)
+  {
+    // only 7 arguments are sent by gps, so... try 5 times
+    uint8_t incorrect_parameters = 0, uart_null = 0;
+    while ( \
+            uart_buffer != "GPRMC" && \
+            incorrect_parameters < MAX_INCORRECT_GPS_PARAMETERS && \
+            uart_null < MAX_NULL_RECEIVED \
+          )
+    {
+      uart_buffer = SerialAT.readStringUntil('$');
+      uart_buffer = SerialAT.readStringUntil(',');
 
-    gprs_powerCycle();
-    uart_buffer = "";
-    SerialAT.flush();
-  }
-  uart_buffer = "";
-
-#ifdef DEBUG
-  SerialDebug.println("Initialized");
+#ifdef DEBUG_GPS
+      SerialAT.print("Leu: ");
+      SerialAT.println(uart_buffer);
 #endif
 
-  SerialAT.print("ATE0\r\n");
-  waitFor("OK\r\n", 0, 2000);
-  uart_buffer = "";
+      if (uart_buffer == "")
+      {
+        uart_null ++;
+      }
+      else
+      {
+        uart_null = 0;
+      }
 
-  SerialAT.print("AT+IPR=115200\r\n");
-  waitFor("OK\r\n", 0, 2000);
+      incorrect_parameters++;
+    }
 
-  uart_buffer = "";
-  ledOff(RED_LED);
-}
+    // isn't a null problem?
+    if (uart_null < MAX_NULL_RECEIVED)
+    {
+      // is the correct argument?
+      if (incorrect_parameters < MAX_INCORRECT_GPS_PARAMETERS)
+      {
+#ifdef DEBUG_GPS
+        SerialAT.println("Achou");
+#endif
+        uart_buffer = "$GPRMC,";
+        uart_buffer += SerialAT.readStringUntil('$');
 
-uint8_t gprs_init() {
-  uint8_t counter;
-  do {
-    ledToggle(BLUE_LED);
-    uart_buffer = "";
-    SerialAT.print("AT+CREG?\r\n");
-  } while (waitFor("CREG: 1", 0, 5000) != 1);
-  uart_buffer = "";
-  ledOn(BLUE_LED);
+        unsigned int i;
+        for (i = 0; i < uart_buffer.length(); i++)
+        {
+          if (gps.encode(uart_buffer[i]))
+          {
+
+            unsigned long age;
+            // retrieves +/- lat/long in 100000ths of a degree
+            gps.f_get_position(&c->lat, &c->lng, &age);
 
 #ifdef DEBUG
-  SerialAT.print("AT+COPS=3,0\r\n");
-  waitFor("OK\r\n", 0, 10000);
-  uart_buffer = "";
-
-  SerialAT.print("AT+COPS?\r\n");
-  waitFor("COPS: 0", 0, 7000);
-  uart_buffer = "";
-
-  SerialDebug.print("AT+CGATT=1\r\n");
+            SerialDebug.print("#########>");
+            SerialDebug.print(uart_buffer);
+            SerialDebug.println("<#########");
+            SerialDebug.print("lat: "); SerialDebug.println(c->lat, 8);
+            SerialDebug.print("lng: "); SerialDebug.println(c->lng, 8);
+            SerialDebug.println("<#########");
 #endif
 
-  counter = 0;
-  do {
-    if (counter++ >= 3) return 0;
-    
-    uart_buffer = "";
-    SerialAT.print("AT+CGATT=0\r\n");
-    waitFor("OK\r\n", 0, 10000);
-    
-    uart_buffer = "";
-    SerialAT.print("AT+CGATT=1\r\n");    
-  } while(! waitFor("OK\r\n", 0, 20000));
+            SerialAT.flush();
 
-#ifdef DEBUG
-  SerialDebug.print("AT+CGDCONT=1, \"IP\", \""APN"\"\r\n");
-#endif
-  SerialAT.print("AT+CGDCONT=1, \"IP\", \""APN"\"\r\n");
-  waitFor("OK\r\n", 0, 3000);
-
-  uint8_t count = 0;
-  do {
-    if (count++ >= 5)
-      return 0;
-
-#ifdef DEBUG
-    SerialDebug.print("AT+CGACT=1,1\r\n");
-#endif
-    SerialAT.print("AT+CGACT=1,1\r\n");
-    uart_buffer = "";
-  } while (waitFor("OK\r\n", "ERROR", 15000) != 1);
-  uart_buffer = "";
-
-#ifdef DEBUG
-  SerialDebug.print("AT+CIFSR\r\n");
-  SerialAT.print("AT+CIFSR\r\n");
-  waitFor("OK\r\n", 0, 7000);
-  uart_buffer = "";
-#endif
-
-  count = 0;
-  do {
-    if (count++ >= 3)
-      return 0;
-
-#ifdef DEBUG
-    SerialDebug.print("AT+CIPSTART=\"TCP\",\""URL"\",1883\r\n");
-#endif
-    SerialAT.print("AT+CIPSTART=\"TCP\",\""URL"\",1883\r\n");
-    uart_buffer = "";
-  } while (waitFor("OK\r\n", "ERROR", 20000) != 1);
-
-  ledOff(BLUE_LED);
-
-
-  // MQTT CONNECT
-#ifdef DEBUG
-  SerialDebug.println("MQTT CONNECT");
-#endif
-  SerialAT.print("AT+CIPSEND=");
-  SerialAT.print(sizeof(MQTT_CONNECT));
-  SerialAT.print("\r\n");
-  uart_buffer = "";
-  waitFor("> ", "", 2000);
-
-  SerialAT.write(MQTT_CONNECT, sizeof(MQTT_CONNECT));
-
-  uart_buffer = "";
-  return waitFor("CIPRCV", 0, 7500);
-}
-
-
-
-void gps_init() {
-  SerialAT.print("AT+GPS=1\r\n");
-  waitFor("OK\r\n", 0, 10000);
-  uart_buffer = "";
-}
-
-uint8_t gprs_send_coods(coords_t *value) {
-  uint32_t lat = abs((value->lat + 29) * GPS_PRECISION);
-  uint32_t lng = abs((value->lng + 53) * GPS_PRECISION);
-
-  String data = String(lat) + String(lng);
-
-  byte publish[4];
-  publish[0] = MQTT_PUBLISH_FIRST_BYTE;
-  publish[1] = data.length() + strlen(MQTT_PUBLISH_TOPIC) + 2;
-  publish[2] = 0;
-  publish[3] = strlen(MQTT_PUBLISH_TOPIC);
-
-
-#ifdef DEBUG
-  SerialDebug.println("Sending data");
-#endif
-  SerialAT.print("AT+CIPSEND=");
-  SerialAT.print(4 + data.length() + strlen(MQTT_PUBLISH_TOPIC));
-  SerialAT.print("\r\n");
-
-  uart_buffer = "";
-  waitFor("> ", "", 2000);
-
-  SerialAT.write(publish, sizeof(publish));
-  SerialAT.print(MQTT_PUBLISH_TOPIC);
-  SerialAT.print(data);
-
-  uart_buffer = "";
-  switch (waitFor("OK\r\n", 0, 5500)) {
-    case 1:
-      uart_buffer = "";
-      ledOn(GREEN_LED);
-      return 1;
-    default:
-      uart_buffer = "";
-      SerialAT.print("AT+CIPSHUT\r\n");
-      waitFor("OK\r\n", 0, 2500);
-      uart_buffer = "";
-      ledOff(GREEN_LED);
-      return 0;
-  }
-}
-
-
-void gps_get_coordinates(coords_t *c) {
-
-  uart_buffer = "";
-#ifdef DEBUG
-  SerialDebug.print("AT+GPSRD=1\r\n");
-#endif
-  SerialAT.print("AT+GPSRD=1\r\n");
-
-  waitFor("OK\r\n", 0, 5000);
-  uart_buffer = "";
-
-  while (1) {
-    // Habilita GPS NMEA pela UART
-    waitFor("$GPVTG", 0, 1200);
-
-    unsigned int i;
-    uart_buffer.remove(0, 9); // remove +GPSRD:
-
-    for (i = 0; i < uart_buffer.length(); i++) {
-      if (gps.encode(uart_buffer[i])) {
-
-        // retrieves +/- lat/long in 100000ths of a degree
-        gps.f_get_position(&c->lat, &c->lng);
-
-#ifdef DEBUG
-        SerialDebug.print("#########>");
-        SerialDebug.print(uart_buffer);
-        SerialDebug.println("<#########");
-        SerialDebug.print("lat: "); SerialDebug.println(c->lat, 8);
-        SerialDebug.print("lng: "); SerialDebug.println(c->lng, 8);
-        SerialDebug.println("<#########");
-#endif
-
-        // Desabilita GPS NMEA pela UART
-        SerialAT.print("AT+GPSRD=0\r\n");
-        waitFor("OK\r\n", 0, 5000);
-        uart_buffer = "";
-        SerialAT.flush();
-
-        ledOff(RED_LED);
-        return;
+            ledOff(RED_LED);
+            ledOn(BLUE_LED);
+            return;
+          }
+        }
       }
     }
 
-    ledToggle(RED_LED);
+    // if is unable to get position or valid information
+    SerialAT.flush();
     uart_buffer = "";
-
+    ledOn(RED_LED);
+    ledOff(BLUE_LED);
   }
 }
 
+void float_to_string(double number, char *res, int afterpoint)
+{
+  // parte inteira em aux
+  int32_t aux = (int32_t) number;
+  // parte fracionária em aux2
+  float aux2 = number - (float) aux;
+
+  // salva a parte inteira do número na string e já coloca o ponto
+  sprintf(res, "%d.", aux);
+
+  uint8_t loop;
+  for (loop = 0; loop < afterpoint; loop++)
+  {
+    aux2 = aux2 * 10;
+    printf("%f\n", aux2 );
+    aux = (int32_t) aux2;
+    char strnumber[2];
+    sprintf(strnumber, "%d", abs(aux) );
+    strcat(res, strnumber);
+
+    aux2 = aux2 - aux;
+  }
+}
 
 int waitFor(const char *ans, const char *error, unsigned int tempo) {
   unsigned long time_counter = millis();
@@ -262,20 +144,4 @@ int waitFor(const char *ans, const char *error, unsigned int tempo) {
   SerialDebug.println("++++");
 #endif
   return 0;
-}
-
-void gprs_reset() {
-  digitalWrite(MODULE_RESET, 1);
-  delay(400);
-  digitalWrite(MODULE_RESET, 0);
-}
-
-void gprs_powerCycle() {
-  gprs_reset();
-
-  delay(500);
-
-  digitalWrite(MODULE_PWR, 1);
-  delay(2000);
-  digitalWrite(MODULE_PWR, 0);
 }

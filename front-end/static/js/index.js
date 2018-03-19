@@ -267,7 +267,6 @@ var actualIndex = -1;
 var isFirstMessage = false;
 var isConnected = false;
 var mqttClient = new Paho.MQTT.Client('iot.eclipse.org', 443, "/ws", '');
-var ip = null;
 var prevPos = {
   lat: 0,
   lng: 0
@@ -313,7 +312,6 @@ var connectionOptions = {
           user.setPosition(pos);
 
           var info = {
-            'ip': ip,
             'position': {
               'lat': pos.lat,
               'lon': pos.lng
@@ -462,11 +460,6 @@ $(document).ready(function() {
       toggle = true;
     }
 
-  });
-
-  //Find the external ip
-  $.get('http://jsonip.com/', function(r) {
-    ip = r.ip
   });
 
   //Update the bus departure based on the server datetime

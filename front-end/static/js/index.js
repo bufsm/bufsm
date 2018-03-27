@@ -9,10 +9,6 @@ var bufsmCurrentLocation = {
   lat: null,
   lng: null
 };
-var userCurrentLocation = {
-  lat: null,
-  lng: null
-};
 
 var defaultMapCenter = {
   lat: -29.710173,
@@ -314,9 +310,18 @@ var connectionOptions = {
           var info = {
             'position': {
               'lat': pos.lat,
-              'lon': pos.lng
+              'lon': pos.lng,
+              'recent_user': 0
             }
           };
+
+          var recentUsage = localStorage.getItem("recentUsage");
+
+          if (recentUsage !== null && (new Date()) - (new Date(recentUsage)) < 30*60*1000){
+              info.recent_user = 1;
+          } else{
+              localStorage.setItem("recentUsage", (new Date()).toISOString());
+          }
 
           var shouldSend = (Math.abs(pos.lat) - Math.abs(prevPos.lat)) > 0.001 || (Math.abs(pos.lon) - Math.abs(prevPos.lon)) > 0.001;
 

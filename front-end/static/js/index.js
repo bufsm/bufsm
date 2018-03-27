@@ -310,9 +310,9 @@ var connectionOptions = {
           var info = {
             'position': {
               'lat': pos.lat,
-              'lon': pos.lng,
-              'recent_user': 0
-            }
+              'lon': pos.lng
+            },
+            'recent_user': 0
           };
 
           var recentUsage = localStorage.getItem("recentUsage");

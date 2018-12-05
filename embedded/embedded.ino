@@ -113,12 +113,19 @@ void do_send(osjob_t* j){
     char longitude[50];
     float_to_string(coord.lng, longitude, 8);
 
-    // Mounting JSON
-    String mydataStr = "{\"lat\":\""+String(latitude)+"\",\"lng\":\""+String(longitude)+"\"}";
+    uint8_t mydata[11];
+    
+    for (uint8_t loop=4; loop<9; loop++)
+    {
+      mydata[loop-4] = latitude[loop];
+    }
 
-    // Converting String into uint8_t array
-    uint8_t mydata[mydataStr.length()+1];
-    mydataStr.getBytes(mydata,mydataStr.length()+1);
+    for (uint8_t loop=4; loop<9; loop++)
+    {
+      mydata[loop+1] = longitude[loop];
+    }
+
+    mydata[10] = 0;
   
     
     // Check if there is not a current TX/RX job running
@@ -202,7 +209,7 @@ void setup() {
     DR_SF8C : DR6
     */
     // Set data rate and transmit power for uplink (note: txpow seems to be ignored by the library)
-    LMIC_setDrTxpow(DR_SF12,14);
+    LMIC_setDrTxpow(DR_SF10,14);
 
     // Init coord
     gps_get_coordinates_ublox(&coord);

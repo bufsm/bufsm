@@ -111,7 +111,7 @@ void do_send(osjob_t* j){
     memset(mydata, 0, sizeof(uint8_t) * sizeof(mydata));
     
     lat_long_to_bytes(coord.lat, mydata);
-    lat_long_to_bytes(coord.lon, mydata + 5);
+    lat_long_to_bytes(coord.lng, mydata + 5);
 
     // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND) {

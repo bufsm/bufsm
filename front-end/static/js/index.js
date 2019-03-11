@@ -366,7 +366,7 @@ var busMarker;
 var actualIndex = -1;
 var isFirstMessage = false;
 var isConnected = false;
-var mqttClient = new Paho.MQTT.Client('broker.hivemq.com', 8000, '');
+var mqttClient = new Paho.MQTT.Client('test.mosquitto.org', 8081, '');
 var prevPos = {
   lat: 0,
   lng: 0
@@ -387,7 +387,7 @@ if (isMobile) {
 
 //Define the connection options
 var connectionOptions = {
-  useSSL: false,
+  useSSL: true,
   timeout: 20,
   keepAliveInterval: 20,
   onSuccess: function() {

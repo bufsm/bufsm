@@ -366,7 +366,7 @@ var busMarker;
 var actualIndex = -1;
 var isFirstMessage = false;
 var isConnected = false;
-var mqttClient = new Paho.MQTT.Client('test.mosquitto.org', 8081, '');
+var mqttClient = new Paho.MQTT.Client('mqtt.solveiot.com.br', 443, '');
 var prevPos = {
   lat: 0,
   lng: 0

@@ -445,6 +445,10 @@ var connectionOptions = {
         });
     }
 
+  },
+  onFailure: function(){
+    toastr.remove();
+    toastr.warning('<strong>Serviço Indisponível no Momento</strong>');
   }
 };
 

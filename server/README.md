@@ -2,7 +2,7 @@
 
 Scripts that ran on the server side.
  
-##bufsm.py
+## bufsm.py
 
 Reads data from the TTN MQTT broker and write it to our own broker, so that
 everyone can subscribe and get the info.

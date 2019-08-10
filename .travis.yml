@@ -1,11 +1,7 @@
 
 script:
-  # - rm -R test Server README.md
   - mkdir ../pages
   - mv front-end/* ../pages
-  # - echo bufsm.dalmago.xyz > ../pages/CNAME
-  # - rm -R Front-end
-  # - echo "bufsm.dalmago.xyz" > ../pages/CNAME
 
 after_success:
     - cd ../pages
@@ -19,7 +15,3 @@ after_success:
 branches:
   only:
   - master
-
-notifications:
-  slack:
-    secure: ML6ICg3cK9lWfPXdOw0XVYXp9UMLeZLtOTZViCM4X65iwXhrc7f/l9jgaNukRL2frl8QYSo/8XLW7AG6TTSIuKVO0j3TdwTHN51aOsFQaGGt0T15VzCx9TlLmHGtJ7VBQmmcJ1cvocY3kk0RJzv10zxaHwM4+yrkwerPXsCwnlEqh+bExs0PINEDm/eJ5WrHoeVQ4XXhbCDgNKnYrIAXHr12EWiNrWQf56kk1XMIBIZ0lv9BQU/Snk9Y9oZ3dnv2mxdAvROm9NjauLKwYr+koxqFyqY2wfwm05tIte2dzuoR11rkpx4+EtCWYI6u2AW/dLVs0xslchQ05R601SRBEwJPJtmv1ryfziJnxKrHFcSZXDumIPVG2Dbnt4TuAkJlWjFbasdJ3p2RnAqUUJt1a7ICopvfMLZwna5AyAxQlyOgVXPbwM9MZRyekfH0WMvKRZL2MM5IGU+QsiT34bwmXL0mNUeIWaDm4oZJYWsckdabbpUko+xyC/mtBabXfKxOLqipq3GB5tqgU5w3Aa4kf+q8wWcOWf/ztWBcaQvqgBVXOkPhMcaVNMy7nTOIyTv+ty9C0lmENUi9kCZnQiVuMhqKLCfFNX5iRFzBF6+Q1AfYRMciHgOYTgN3qEK+LXAZOxEoKRoJxsL9DVDGmIQd3kKAvpQsaUcWvV+wW453feI=

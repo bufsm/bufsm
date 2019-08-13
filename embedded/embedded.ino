@@ -107,33 +107,18 @@ void onEvent (ev_t ev) {
 
 void do_send(osjob_t* j){
 
-    char latitude[50];
-    float_to_string(coord.lat, latitude, 8);
+    uint8_t mydata[10];
+    memset(mydata, 0, sizeof(uint8_t) * sizeof(mydata));
     
-    char longitude[50];
-    float_to_string(coord.lng, longitude, 8);
+    lat_long_to_bytes(coord.lat, mydata);
+    lat_long_to_bytes(coord.lng, mydata + 5);
 
-    uint8_t mydata[11];
-    
-    for (uint8_t loop=4; loop<9; loop++)
-    {
-      mydata[loop-4] = latitude[loop];
-    }
-
-    for (uint8_t loop=4; loop<9; loop++)
-    {
-      mydata[loop+1] = longitude[loop];
-    }
-
-    mydata[10] = 0;
-  
-    
     // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         // Prepare upstream data transmission at the next possible time.
-        LMIC_setTxData2(1, mydata, sizeof(mydata)-1, 0);
+        LMIC_setTxData2(1, mydata, sizeof(mydata), 0);
         Serial.println(F("Packet queued"));
     }
 }

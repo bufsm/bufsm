@@ -37,6 +37,8 @@ typedef struct {
 void gps_get_coordinates_ublox(coords_t *c);
 
 void float_to_string(double number, char *res, int afterpoint);
+void lat_long_to_bytes(double lat_long, uint8_t *res);
+void number_to_byte(double number, uint8_t *res, int afterpoint, int bitsbeforepoint, int bitsafterpoint);
 
 int waitFor(const char *, const char *, unsigned int);
 

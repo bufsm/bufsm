@@ -90,6 +90,59 @@ void gps_get_coordinates_ublox(coords_t *c) {
   }
 }
 
+// transforma um number double em um array de bytes
+// o array deve ser do tamanho (1 + bitsbeforepoint + bitsafterpoint)
+// o 1o bit eh o bit indicativo de sinal (0 positivo, 1 negativo)
+// afterpoint: numero de casas depois da virgula
+// bitsbeforepoint: numero de bits reservados para o numero antes da virgula
+// bitsafterpoint:numero de bits reservados para o numero depois da virgula
+void number_to_byte(double number, uint8_t *res, int afterpoint, int bitsbeforepoint, int bitsafterpoint) {
+  // int bitsbeforepoint = 8;
+  // int bitsafterpoint = 27;
+
+  // parte inteira em aux
+  int64_t aux = (int64_t) number;
+  int64_t result = 0;
+  // parte fracionária em aux2
+  double aux2 = number - (int32_t) aux;
+
+  // pega o valor das casas decimais
+  int64_t fpoint = (int64_t)abs(aux2 * pow(10, afterpoint));
+  if((abs(aux) << (63 - bitsbeforepoint)) >> (63 - bitsbeforepoint) != abs(aux) ) {
+    printf("Numero antes da virgula e maior que a quantidade de bits requisitada\n");
+  }
+  if((fpoint << (63 - bitsafterpoint)) >> (63 - bitsafterpoint) != fpoint ) {
+    printf("Numero depois da virgula e maior que a quantidade de bits requisitada\n");
+  }
+
+  // se negativo, seta primeiro bit 1
+  if(aux < 0) {
+      result = (int64_t)1 << (bitsbeforepoint + bitsafterpoint);
+  }
+  // seta o valor inteiro
+  result = result | ((int64_t)abs(aux) << bitsafterpoint);
+  // seta o resto como as casas decimais
+  result = result | (int64_t)abs(aux2 * pow(10, 8));
+
+  int numBytes = (int)((1 + bitsbeforepoint + bitsafterpoint) / 8);
+  if((1 + bitsbeforepoint + bitsafterpoint) % 8 != 0) {
+    numBytes++;
+  }
+
+  // sem memcpy porque pode ser big/little endian
+  for(int i = 0; i < numBytes; i++) {
+    res[i] = (result >> (numBytes - 1 - i) * 8) & 0xFF;
+  }
+}
+
+// transforma latitude/longitude (double) em 5 bytes (36 bits uteis)
+// formato: 4 bits 0, 1 bit indicativo de sinal, 8 bits de parte inteira, 27 bits de parte decimal
+void lat_long_to_bytes(double lat_long, uint8_t *res) {
+  // +180 a -180 e +90 a -90 estao sempre abaixo de 8 bits (1 byte)
+  // 8 digitos eh sempre abaixo de 27 bits
+  number_to_byte(lat_long, res, 8, 8, 27);
+}
+
 void float_to_string(double number, char *res, int afterpoint)
 {
   // parte inteira em aux
